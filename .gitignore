@@ -1,0 +1,7 @@
+*.pyc
+.idea
+imagetranslation
+imageregistration
+neuroglancer
+datasets
+temp
