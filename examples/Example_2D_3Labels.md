@@ -18,7 +18,7 @@ python imagetranslation/tools/split.py \
 
 ### Training and prediction
 
-Train the model for the direction "AtoB" (EM images to labels):
+Train the classifier for the direction "AtoB" (EM images to labels) using paired-to-image translation with u-net generator:
 ```bash
 python imagetranslation/translate.py  --model pix2pix   --mode train \
   --input_dir datasets/vnc/combined/train \
@@ -26,7 +26,9 @@ python imagetranslation/translate.py  --model pix2pix   --mode train \
   --which_direction AtoB  --max_epochs 200 \
   --display_freq 50
 ```
-Note: this may take 1 hour on GPU, on CPU you will be waiting for a few hours
+Note: this may take 30min using a GPU, without you will be waiting for a few hours.
+The test run will output an HTML file at `temp/Example_2D_3Labels/train/index.html` that shows input/output/target image sets.
+Meanwhile you can look at the progress using tensorboard:
 ```bash
 tensorboard --logdir temp/Example_2D_3Labels
 ```
@@ -40,7 +42,7 @@ python translate.py \
   --input_dir datasets/facades/val \
   --checkpoint temp/Example_2D_3Labels/train
 ```
-The test run will output an HTML file at `temp/facades_test/index.html` that shows input/output/target image sets.
+The test run will output an HTML file at `temp/Example_2D_3Labels/test/index.html` that shows input/output/target image sets.
 
 
 ### Evaluation
