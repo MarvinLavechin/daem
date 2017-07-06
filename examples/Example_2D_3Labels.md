@@ -27,20 +27,21 @@ python imagetranslation/translate.py  --model pix2pix   --mode train \
   --display_freq 50
 ```
 Note: this may take 30min using a GPU, without you will be waiting for a few hours.
-The test run will output an HTML file at `temp/Example_2D_3Labels/train/index.html` that shows input/output/target image sets.
-Meanwhile you can look at the progress using tensorboard:
+The test run will output an HTML file at `temp/Example_2D_3Labels/train/index.html` that shows input/output/target image sets every `display_freq` steps.
+You can also follow at the progress using tensorboard:
 ```bash
 tensorboard --logdir temp/Example_2D_3Labels
 ```
 
 Test the model
 ```bash
-python translate.py \
+python imagetranslation/translate.py \
   --model pix2pix \
+  --which_direction AtoB \
   --mode test \
-  --output_dir temp/Example_2D_3Labels/test \
-  --input_dir datasets/facades/val \
   --checkpoint temp/Example_2D_3Labels/train
+  --input_dir datasets/facades/val \
+  --output_dir temp/Example_2D_3Labels/test 
 ```
 The test run will output an HTML file at `temp/Example_2D_3Labels/test/index.html` that shows input/output/target image sets.
 
