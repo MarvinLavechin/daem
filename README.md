@@ -48,7 +48,7 @@ Combine input and output images
 ```bash
 python imagetranslation/tools/process.py \
   --operation combine \
-  --input_dir datasets/vnc/stack1/images/ \
+  --input_dir datasets/vnc/stack1/raw/ \
   --b_dir datasets/vnc/stack1/labels/ \
   --output_dir datasets/vnc/combined/
 ```
