@@ -113,9 +113,14 @@ def relabel_and_slice(stack):
 
 
 def test_relabeling():
-    # For testing:
-    filename = 'datasets/cortex/temp/train-labels.tif'     # This is currently deleted after conversion of multi-tif to png image series
-    data = tifread('./datasets/' + filename)               # TODO Load from series of png images (!)
+    # Test conversion of three dimensional region labelling into cytoplasma and overlap and reconstruction from that
+    # TODO Prediction of cytoplasma (membranes) and overlap from (adjacent) EM images
+
+    # Get 3D dataset as multi tiff file
+    # TODO Load from series of png images (!)
+    filename = 'cortex/temp/train-labels.tif'
+    data = tifread('../datasets/' + filename)
+
     plt.subplot(241)
     plt.imshow(data[0])
     plt.title('label [z=0,:,:]')
