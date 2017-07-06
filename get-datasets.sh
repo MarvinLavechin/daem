@@ -4,7 +4,7 @@
 git clone https://github.com/tbullmann/groundtruth-drosophila-vnc datasets/vnc
 
 # Get the Mouse Cortex dataset
-git clone https://github.com/tbullmann/groundtruth-drosophila-vnc datasets/cortex
+git clone https://github.com/tbullmann/groundtruth-mouse-cortex datasets/cortex
 cd datasets/cortex
 bash download-and-convert.sh
 cd ../..

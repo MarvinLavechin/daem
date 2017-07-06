@@ -39,7 +39,7 @@ python imagetranslation/translate.py \
   --model pix2pix \
   --which_direction AtoB \
   --mode test \
-  --checkpoint temp/Example_2D_3Labels/train
+  --checkpoint temp/Example_2D_3Labels/train \
   --input_dir datasets/facades/val \
   --output_dir temp/Example_2D_3Labels/test 
 ```
