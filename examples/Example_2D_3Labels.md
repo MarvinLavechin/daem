@@ -23,7 +23,8 @@ Train the classifier for the direction "AtoB" (EM images to labels) using paired
 python imagetranslation/translate.py  --model pix2pix   --mode train \
   --input_dir datasets/vnc/combined/train \
   --output_dir temp/Example_2D_3Labels/train \
-  --which_direction AtoB  --max_epochs 200 \
+  --which_direction AtoB  --max_epochs 2000 \
+  --generator resnet  --Y_type label  --flipud  --transpose \
   --display_freq 50
 ```
 Note: this may take 30min using a GPU, without you will be waiting for a few hours.
