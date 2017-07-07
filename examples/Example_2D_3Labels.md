@@ -1,8 +1,10 @@
 # Predicting membrane, mitochondria and synapse labels of the Drosophila 2D dataset by paired image-to-image translation
 
-### Preparation
+### Typical result
 
 ![Result](Example_2D_3Labels_result.jpg)
+
+### Preparation
 
 Combine input and output images
 ```bash
