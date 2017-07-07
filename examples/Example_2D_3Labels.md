@@ -58,22 +58,35 @@ The test run will output an HTML file at `temp/Example_2D_3Labels/test/index.htm
 
 ### Evaluation
 
-Evaluate the model prediction on the four images of the test set:
+Evaluate the model prediction for each channel on the four images of the test set:
 
 ```bash
 python tools/evaluate.py \
   --predicted "temp/Example_2D_3Labels/test/images/*outputs.png" \
   --true "temp/Example_2D_3Labels/test/images/*targets.png" \
-  --output temp/Example_2D_3Labels/test/evaluation.csv
+  --output temp/Example_2D_3Labels/test/evaluation-membrane.csv  --channel 0
+python tools/evaluate.py \
+  --predicted "temp/Example_2D_3Labels/test/images/*outputs.png" \
+  --true "temp/Example_2D_3Labels/test/images/*targets.png" \
+  --output temp/Example_2D_3Labels/test/evaluation-mitochondria.csv  --channel 1
+python tools/evaluate.py \
+  --predicted "temp/Example_2D_3Labels/test/images/*outputs.png" \
+  --true "temp/Example_2D_3Labels/test/images/*targets.png" \
+  --output temp/Example_2D_3Labels/test/evaluation-synapses.csv  --channel 2
 ```
-*Result: Typical mean(standard error) values will be RAND=0.87(0.03) and RANDthinned=0.987(0.001).*
-**WARNING: The RAND and RANDthinned are implemented on 1 channel data only, multichannel converted to grayscale. Therefore these values are taken with caution.**
+*Typical values VRAND(thinned)=0.990 for membranes, VRAND=0.887 for mitochondria and VRAND=0.770 for synapses.*
 
 You might want to evaluate the model during the training:
 ```bash
 python tools/evaluate.py \
   --predicted "temp/Example_2D_3Labels/train/images/*outputs.png" \
   --true "temp/Example_2D_3Labels/train/images/*targets.png" \
-  --output temp/Example_2D_3Labels/train/evaluation.csv
+  --output temp/Example_2D_3Labels/train/evaluation-training-membranes.csv  --channel 0
 ```
 
+### Notes
+
+A short description of the evaluation metrics can be found on the [SNEMI3D website](http://brainiac2.mit.edu/isbi_challenge/evaluation
+) for which an [matlab implementation](SNEMI3D_metrics.m) is available.
+
+Perhaps, other metrics could be used. See this comprehensive [survey](https://bmcmedimaging.biomedcentral.com/articles/10.1186/s12880-015-0068-x) for biomedical segmentation metrics which has been carried out using this [C implementation](https://github.com/Visceral-Project/EvaluateSegmentation).

@@ -41,6 +41,7 @@ parser.add_argument("--predicted", required=True, help="path/files for predicted
 parser.add_argument("--true", required=True, help="path/files for predicted labels")
 parser.add_argument("--output", required=True, help="output path/files")
 parser.add_argument("--threshold", default=0.5, help="threshold for the predict label")
+parser.add_argument("--channel", type=int, default=0, help="channel to be evaluated")
 a = parser.parse_args()
 
 
@@ -90,8 +91,8 @@ def main():
 
         # load iamges, 0 = black = membrane, 1 = white = non-membrane
         # threshold with default 0.5, so that 1 = membrane/border and 0 is non-membrane/region
-        true_border = imread(true_path, as_grey=True) < a.threshold
-        pred_border = imread(pred_path, as_grey=True) < a.threshold
+        true_border = imread(true_path)[:, :, a.channel] < a.threshold
+        pred_border = imread(pred_path)[:, :, a.channel] < a.threshold
 
         # from matplotlib import pyplot as plt
         #
