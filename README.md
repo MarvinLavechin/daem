@@ -7,6 +7,8 @@
 
 ### Requirements
 - Tensorflow 1.0
+- Scikit-learn
+- Pandas
 
 ### Preferred
 - Anaconda Python distribution
