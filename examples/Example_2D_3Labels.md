@@ -2,6 +2,8 @@
 
 ### Preparation
 
+![Result](Example_2D_3Labels_result.jpg)
+
 Combine input and output images
 ```bash
 python imagetranslation/tools/process.py \
