@@ -12,6 +12,8 @@ from scipy.misc import comb
 import numpy as np
 import pandas as pd
 
+from matplotlib import pyplot as plt
+
 """
 http://brainiac2.mit.edu/isbi_challenge/evaluation
 
@@ -38,11 +40,13 @@ We understand that segmentation evaluation is an ongoing and sensitive research 
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--predicted", required=True, help="path/files for predicted labels")
-parser.add_argument("--true", required=True, help="path/files for predicted labels")
+parser.add_argument("--true", required=True, help="path/files for true labels")
 parser.add_argument("--output", required=True, help="output path/files")
 parser.add_argument("--threshold", default=0.5, help="threshold for the predict label")
 parser.add_argument("--channel", type=int, default=0, help="channel to be evaluated")
-a = parser.parse_args()
+parser.add_argument("--plot", dest="plot", action="store_true", help="plot images")
+parser.add_argument("--no_plot", dest="plot", action="store_false", help="don't plot images")
+parser.set_defaults(plot=True)a = parser.parse_args()
 
 
 def rand_index(truth, predicted):
@@ -94,23 +98,9 @@ def main():
         true_border = imread(true_path)[:, :, a.channel] < a.threshold
         pred_border = imread(pred_path)[:, :, a.channel] < a.threshold
 
-        # from matplotlib import pyplot as plt
-        #
-        # plt.subplot(221)
-        # plt.imshow(pred_border)
-        # plt.subplot(222)
-        # plt.imshow(true_border)
-
         # border thinning
         pred_border_thinned = border_thinning(pred_border)
         true_border_thinned = border_thinning(true_border)
-
-        # plt.subplot(223)
-        # plt.imshow(pred_border_thinned)
-        # plt.subplot(224)
-        # plt.imshow(true_border_thinned)
-        #
-        # plt.show()
 
         # Ravel and restrict to foreground pixels
         true_border, pred_border = foreground_restriction(true_border.ravel(), pred_border.ravel())
@@ -120,6 +110,23 @@ def main():
         RAND_thinned = rand_index(true_border_thinned, pred_border_thinned)
 
         dst.append([pred_path, true_path, RAND, RAND_thinned])
+
+        if a.plot:
+            print ("RAND = $%f1.3, RAND(thinned) =%f1.3\n" % (RAND, RAND_thinned))
+            plt.subplot(221)
+            plt.imshow(pred_border)
+            plt.title("predicted label")
+            plt.subplot(222)
+            plt.imshow(true_border)
+            plt.title("true label")
+            plt.subplot(223)
+            plt.imshow(pred_border_thinned)
+            plt.title("predicted thinned label")
+            plt.subplot(224)
+            plt.imshow(true_border_thinned)
+            plt.title("true thinned label")
+            plt.show()
+
 
     dst = pd.DataFrame(dst,
                        columns=['pred_path', 'true_path', 'RAND', 'RAND_thinned'])
