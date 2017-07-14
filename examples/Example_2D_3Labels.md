@@ -27,7 +27,7 @@ Train the classifier for the direction "AtoB" (EM images to labels) using paired
 python imagetranslation/translate.py   --mode train \
   --input_dir datasets/vnc/combined/train \
   --output_dir temp/Example_2D_3Labels/train \
-  --which_direction AtoB  --Y_type label \
+  --which_direction AtoB  --Y_loss square \
   --model pix2pix   --generator resnet \
   --fliplr   --flipud  --transpose \
   --max_epochs 2000  --display_freq 50
