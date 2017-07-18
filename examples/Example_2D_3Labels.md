@@ -62,7 +62,7 @@ Evaluate the model prediction for each channel on the four images of the test se
 
 ### Synapses
 
-Evaluate ```--channel 0``` (red channel) of the output on the test images:
+Evaluate `--channel 0` (red channel) of the output on the test images:
 
 ```bash
 python tools/evaluate.py \
@@ -82,7 +82,7 @@ precision = 1.000, recall = 0.347, F-Score = 0.502 and and adjusted RAND error =
 
 ### Mitochondria
 
-Evaluate ```--channel 1``` (green channel) of the output on the test images:
+Evaluate `--channel 1` (green channel) of the output on the test images:
 
 ```bash
 python tools/evaluate.py \
@@ -101,7 +101,7 @@ precision = 0.961, recall = 0.911, F-Score = 0.935 and and adjusted RAND error =
 
 ### Membrane
 
-Evaluate ```--channel 2``` (blue channel) of the output on the test images:
+Evaluate `--channel 2` (blue channel) of the output on the test images:
 
 ```bash
 python tools/evaluate.py \
@@ -113,7 +113,7 @@ python tools/evaluate.py \
 ![Result](Example_2D_3Labels_eval_membranes.jpg)
 
 Typical values are RAND=0.7850, MI = 0.629 for the membrane label.
-The segmentation of neurons based on the membrane label ('--segment_by 1') has an adjusted RAND=0.998,
+The segmentation of neurons based on the membrane label (`--segment_by 1`) has an adjusted RAND=0.998,
 precision = 0.912, recall =	0.962, F-Score = 0.936 and and adjusted RAND error = 0.064.
 
 **The membrane label does not fully overlap with the ground truth.
