@@ -1,6 +1,6 @@
 # Dense reconstruction from electron microscope images
 
-![Result](Example_2D_3Labels_eval_membranes.jpg)
+![Result](examples/Example_2D_3Labels_eval_membranes.jpg)
 
 ### Prerequisites
 - Linux or OSX
