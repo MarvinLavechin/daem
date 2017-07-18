@@ -137,9 +137,8 @@ def main():
         pred_label = imread(pred_path)[:, :, a.channel] > a.threshold
 
         # scores on labels
-        RAND_label = adjusted_rand_score(true_label, pred_label)
-        MI_label = adjusted_mutual_info_score(true_label, pred_label)
-        print("RAND_label = $%1.3f, MI_label =%1.3f\n" % (RAND_label, MI_label))
+        RAND_label, MI_label = segmentation_metrics(true_label, pred_label)
+        print("RAND_label = %1.3f, MI_label =%1.3f\n" % (RAND_label, MI_label))
 
         #scores on segmentation into regions
         true_segm = regions(true_label, background=a.segment_by)
@@ -157,5 +156,5 @@ def main():
     print ("Saved to %s" % output_path)
 
 
-test()
+# test()
 main()

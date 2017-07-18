@@ -62,6 +62,8 @@ Evaluate the model prediction for each channel on the four images of the test se
 
 #### Synapses
 
+Evaluate `--channel 0` (red channel) of the output on the test images:
+
 ```bash
 python tools/evaluate.py \
   --predicted "temp/Example_2D_3Labels/test/images/*outputs.png" \
@@ -71,9 +73,16 @@ python tools/evaluate.py \
 
 ![Result](Example_2D_3Labels_eval_synapses.jpg)
 
-for synapses: RAND=0.408, precision = 1.000, recall = 0.259,
+Typical values are RAND=0.490, MI = 0.309 for the membrane label.
+The segmentation of individual mitochondria has an adjusted RAND=0.309,
+precision = 1.000, recall = 0.347, F-Score = 0.502 and and adjusted RAND error = 0.497.
+
+**There are no false positive synapses, but almost two third of them are not recognized (in a single section).**
+
 
 #### Mitochondria
+
+Evaluate `--channel 1` (green channel) of the output on the test images:
 
 ```bash
 python tools/evaluate.py \
@@ -84,9 +93,15 @@ python tools/evaluate.py \
 
 ![Result](Example_2D_3Labels_eval_mitochondria.jpg)
 
-for mitochondria: RAND=0.911, precision = 0.845, recall = 0.811,
+Typical values are RAND=0.891, MI = 0.757 for the membrane label.
+The segmentation of individual mitochondria has an adjusted RAND=0.999,
+precision = 0.961, recall = 0.911, F-Score = 0.935 and and adjusted RAND error = 0.065.
+
+**Most of the mitochondria are correctly labelled and segmented.**
 
 #### Membrane
+
+Evaluate `--channel 2` (blue channel) of the output on the test images:
 
 ```bash
 python tools/evaluate.py \
@@ -97,9 +112,15 @@ python tools/evaluate.py \
 
 ![Result](Example_2D_3Labels_eval_membranes.jpg)
 
-and for segmentation based on membrane RAND = 0.778, adjusted RAND = 0.999, precision = 0.923, recall = 0.963.
+Typical values are RAND=0.7850, MI = 0.629 for the membrane label.
+The segmentation of neurons based on the membrane label ('--segment_by 1') has an adjusted RAND=0.998,
+precision = 0.912, recall =	0.962, F-Score = 0.936 and and adjusted RAND error = 0.064.
 
-You might want to evaluate the model during the training:
+**The membrane label does not fully overlap with the ground truth.
+However, the segmentation of neurons does not depend on minor variation of the membrane outlines.**
+
+
+You might want to evaluate the neuron segmentation during the training:
 ```bash
 python tools/evaluate.py \
   --predicted "temp/Example_2D_3Labels/train/images/*outputs.png" \
