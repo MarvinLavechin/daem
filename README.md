@@ -7,7 +7,7 @@
 
 ### Requirements
 - Tensorflow 1.0
-- Scikit-learn
+- Scikit-learn 0.18
 - Pandas
 
 ### Preferred

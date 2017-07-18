@@ -60,21 +60,44 @@ The test run will output an HTML file at `temp/Example_2D_3Labels/test/index.htm
 
 Evaluate the model prediction for each channel on the four images of the test set:
 
+#### Synapses
+
 ```bash
 python tools/evaluate.py \
   --predicted "temp/Example_2D_3Labels/test/images/*outputs.png" \
   --true "temp/Example_2D_3Labels/test/images/*targets.png" \
-  --output temp/Example_2D_3Labels/test/evaluation-membrane.csv  --channel 0
+  --output temp/Example_2D_3Labels/test/evaluation-synapse.csv  --channel 0
+```
+
+![Result](Example_2D_3Labels_eval_synapses.jpg)
+
+for synapses: RAND=0.408, precision = 1.000, recall = 0.259,
+
+#### Mitochondria
+
+```bash
 python tools/evaluate.py \
   --predicted "temp/Example_2D_3Labels/test/images/*outputs.png" \
   --true "temp/Example_2D_3Labels/test/images/*targets.png" \
   --output temp/Example_2D_3Labels/test/evaluation-mitochondria.csv  --channel 1
+```
+
+![Result](Example_2D_3Labels_eval_mitochondria.jpg)
+
+for mitochondria: RAND=0.911, precision = 0.845, recall = 0.811,
+
+#### Membrane
+
+```bash
 python tools/evaluate.py \
   --predicted "temp/Example_2D_3Labels/test/images/*outputs.png" \
   --true "temp/Example_2D_3Labels/test/images/*targets.png" \
-  --output temp/Example_2D_3Labels/test/evaluation-synapses.csv  --channel 2
+  --output temp/Example_2D_3Labels/test/evaluation-membrane.csv  --channel 2  --segment_by 1
 ```
-*Typical values VRAND(thinned)=0.990 for membranes, VRAND=0.887 for mitochondria and VRAND=0.770 for synapses.*
+
+![Result](Example_2D_3Labels_eval_membranes.jpg)
+
+and for segmentation based on membrane RAND = 0.778, adjusted RAND = 0.999, precision = 0.923, recall = 0.963.
 
 You might want to evaluate the model during the training:
 ```bash

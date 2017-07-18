@@ -1,86 +1,124 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+from collections import Counter
 
 import argparse
 import glob
-from skimage.morphology import skeletonize
-from skimage.io import imread
 from sklearn.metrics.cluster import adjusted_rand_score, adjusted_mutual_info_score
-from scipy.misc import comb
-# from scipy.ndimage.morphology import binary_dilation
-import numpy as np
 import pandas as pd
+import numpy as np
 
+from skimage.io import imread
+from skimage.measure import label as regions
+# from skimage.morphology import skeletonize
+from scipy.sparse import csr_matrix
 from matplotlib import pyplot as plt
 
-"""
-http://brainiac2.mit.edu/isbi_challenge/evaluation
 
-# Evaluation
-In order to evaluate and rank the performances of the participant methods, we first used 2D topology-based segmentation metrics, together with the pixel error (for the sake of metric comparison). Each metric has an updated leader-board. However, retrospective evaluation of the original challenge scoring system revealed that it was not sufficiently robust to variations in the widths of neurite borders. After evaluating all of these metrics and associated variants, we found that specially normalized versions of the Rand error and Variation of Information best matched our qualitative judgements of segmentation quality:
+def segmentation_metrics(true_label, pred_label):
 
-Foreground-restricted Rand Scoring after border thinning: VRand(thinned)
-Foreground-restricted Information Theoretic Scoring after border thinning: VInfo (thinned)
-We found empirically that of these two popular metrics, VRand is more robust than VInfo  so the new leader board is sorted by its value. You can find all details about the new metrics in our open-access challenge publication.
+    RAND_label = adjusted_rand_score(true_label.ravel(), pred_label.ravel())
+    MI_label = adjusted_mutual_info_score(true_label.ravel(), pred_label.ravel())
 
-If you want to apply these metrics yourself to your own results, you can do it within Fiji using this script.
-
-# Dismissed metrics
-The old (and deprecated) metrics were:
-
-Minimum Splits and Mergers Warping error, a segmentation metric that penalizes topological disagreements, in this case, the object splits and mergers.
-Foreground-restricted Rand error: defined as 1 - the maximal F-score of the foreground-restricted Rand index, a measure of similarity between two clusters or segmentations. On this version of the Rand index we exclude the zero component of the original labels (background pixels of the ground truth).
-Pixel error: defined as 1 - the maximal F-score of pixel similarity, or squared Euclidean distance between the original and the result labels.
-If you are interested, you can still use this metrics in Fiji with this script.
-
-We understand that segmentation evaluation is an ongoing and sensitive research topic, therefore we open the metrics to discussion. Please, do not hesitate to contact the organizers to discuss about the metric selection.
-"""
+    return RAND_label, MI_label
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--predicted", required=True, help="path/files for predicted labels")
-parser.add_argument("--true", required=True, help="path/files for true labels")
-parser.add_argument("--output", required=True, help="output path/files")
-parser.add_argument("--threshold", default=0.5, help="threshold for the predict label")
-parser.add_argument("--channel", type=int, default=0, help="channel to be evaluated")
-parser.add_argument("--plot", dest="plot", action="store_true", help="plot images")
-parser.add_argument("--no_plot", dest="plot", action="store_false", help="don't plot images")
-parser.set_defaults(plot=True)a = parser.parse_args()
+def SNEMI3D_metrics(true_segm, pred_segm):
+    n = true_segm.size
+    overlap = Counter(zip(true_segm.ravel(), pred_segm.ravel()))
+    data = overlap.values()
+    row_ind, col_ind = zip(*overlap.keys())
+    p_ij = csr_matrix((data, (row_ind, col_ind)))
+
+    a_i = np.array(p_ij[1:, :].sum(axis=1))
+    b_j = np.array(p_ij[1:, 1:].sum(axis=0))
+    p_i0 = p_ij[1:, 0]
+    p_ij = p_ij[1:, 1:]
+
+    sumA = (a_i * a_i).sum()
+    sumB = (b_j * b_j).sum() + p_i0.sum()/n
+    sumAB = p_ij.multiply(p_ij).sum() + p_i0.sum()/n
+
+    RAND_index = 1 - (sumA + sumB - 2*sumAB) / (n ** 2)
+    precision = sumAB / sumB
+    recall = sumAB / sumA
+    F_score = 2.0 * precision * recall / (precision + recall)
+    adapted_RAND_error = 1.0 - F_score
+
+    return RAND_index, precision, recall, F_score, adapted_RAND_error
 
 
-def rand_index(truth, predicted):
-    """
-    Original code by cjauvin, answered Jun 17 '15 at 14:24 on stack exchange
-    https://stats.stackexchange.com/questions/89030/rand-index-calculation
-    :param truth:
-    :param predicted:
-    :return:
-    """
-    tp_plus_fp = comb(np.bincount(truth), 2).sum()
-    tp_plus_fn = comb(np.bincount(predicted), 2).sum()
-    A = np.c_[(truth, predicted)]
-    tp = sum(comb(np.bincount(A[A[:, 0] == i, 1]), 2).sum()
-             for i in set(truth))
-    fp = tp_plus_fp - tp
-    fn = tp_plus_fn - tp
-    tn = comb(len(A), 2) - tp - fp - fn
-    return (tp + tn) / (tp + fp + fn + tn)
+def test():
 
+    pred_path = '../temp/Example_2D_3Labels/test/images/02-outputs.png'
+    true_path = '../temp/Example_2D_3Labels/test/images/02-targets.png'
 
-def border_thinning(labels):
-    return skeletonize(labels)
+    print ('Evaluate prediction %s vs truth %s' % (pred_path, true_path))
 
+    channel = 2
+    threshold = 0.5
+    segment_by = 1
+    true_label = imread(true_path)[:, :, channel] > threshold
+    pred_label = imread(pred_path)[:, :, channel] > threshold
 
-def foreground_restriction(truth, predicted):
-    # Restrict to pixels where there is no membrane in the ground truth
-    keep = np.where(truth==False)
-    truth = truth[keep]
-    predicted = predicted[keep]
-    return truth, predicted
+    # scores on labels
+    RAND_label, MI_label = segmentation_metrics(true_label, pred_label)
+    print("RAND_label = %1.3f, MI_label =%1.3f\n" % (RAND_label, MI_label))
+
+    # scores on segmentation into regions
+    true_segm = regions(true_label, background=segment_by)
+    pred_segm = regions(pred_label, background=segment_by)
+    RAND, precision, recall, F_score, adapted_RAND_error = SNEMI3D_metrics(true_segm, pred_segm)
+    print("RAND = %1.3f, precision = %1.3f, recall = %1.3f, F_score = %1.3f, adapted_RAND_error = %1.3f"
+          % (RAND, precision, recall, F_score, adapted_RAND_error))
+
+    plt.subplot(221)
+    plt.imshow(pred_label, cmap='gray')
+    plt.title("predicted label")
+    plt.axis('off')
+
+    plt.subplot(222)
+    plt.imshow(true_label, cmap='gray')
+    plt.title("true label")
+    plt.axis('off')
+
+    plt.subplot(223)
+    plt.imshow(pred_segm)
+    plt.title("predicted segmentation")
+    plt.axis('off')
+
+    plt.subplot(224)
+    plt.imshow(true_segm)
+    plt.title("true segmentation")
+    plt.axis('off')
+
+    plt.tight_layout()
+    plt.show()
 
 
 def main():
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--predicted", required=True, help="path/files for predicted labels")
+    parser.add_argument("--true", required=True, help="path/files for true labels")
+    parser.add_argument("--output", required=True, help="output path/files")
+    parser.add_argument("--threshold", default=0.5, help="threshold for the predict label")
+    parser.add_argument("--channel", type=int, default=0, help="channel to be evaluated")
+    parser.add_argument("--segment_by", type=int, default=0, help="border value for segmentation into regions (e.g. membrane)")
+
+    # Not implemented:
+    # parser.add_argument("--fr", dest="fr", action="store_true", help="foreground restriction")
+    # parser.add_argument("--no_fr", dest="fr", action="store_false", help="no foreground restriction")
+    # parser.set_defaults(plot=False)
+    # parser.add_argument("--bt", dest="bt", action="store_true", help="border thinning")
+    # parser.add_argument("--no_bt", dest="bt", action="store_false", help="no border thinning")
+    # parser.set_defaults(plot=False)
+    # parser.add_argument("--plot", dest="plot", action="store_true", help="plot images")
+    # parser.add_argument("--no_plot", dest="plot", action="store_false", help="don't plot images")
+    # parser.set_defaults(plot=True)
+
+    a = parser.parse_args()
 
     dst = []
     output_path = a.output
@@ -93,46 +131,31 @@ def main():
 
         print ('Evaluate prediction %s vs truth %s' % (pred_path, true_path))
 
-        # load iamges, 0 = black = membrane, 1 = white = non-membrane
+        # load iamges, e.g. 0 = black = membrane, 1 = white = non-membrane
         # threshold with default 0.5, so that 1 = membrane/border and 0 is non-membrane/region
-        true_border = imread(true_path)[:, :, a.channel] < a.threshold
-        pred_border = imread(pred_path)[:, :, a.channel] < a.threshold
+        true_label = imread(true_path)[:, :, a.channel] > a.threshold
+        pred_label = imread(pred_path)[:, :, a.channel] > a.threshold
 
-        # border thinning
-        pred_border_thinned = border_thinning(pred_border)
-        true_border_thinned = border_thinning(true_border)
+        # scores on labels
+        RAND_label = adjusted_rand_score(true_label, pred_label)
+        MI_label = adjusted_mutual_info_score(true_label, pred_label)
+        print("RAND_label = $%1.3f, MI_label =%1.3f\n" % (RAND_label, MI_label))
 
-        # Ravel and restrict to foreground pixels
-        true_border, pred_border = foreground_restriction(true_border.ravel(), pred_border.ravel())
-        true_border_thinned, pred_border_thinned = foreground_restriction(true_border_thinned.ravel(), pred_border_thinned.ravel())
+        #scores on segmentation into regions
+        true_segm = regions(true_label, background=a.segment_by)
+        pred_segm = regions(pred_label, background=a.segment_by)
+        RAND, precision, recall, F_score, adapted_RAND_error = SNEMI3D_metrics(true_segm, pred_segm)
+        print("RAND = %1.3f, precision = %1.3f, recall = %1.3f, F_score = %1.3f, adapted_RAND_error = %1.3f"
+              % (RAND, precision, recall, F_score, adapted_RAND_error))
 
-        RAND = rand_index(true_border, pred_border)
-        RAND_thinned = rand_index(true_border_thinned, pred_border_thinned)
-
-        dst.append([pred_path, true_path, RAND, RAND_thinned])
-
-        if a.plot:
-            print ("RAND = $%f1.3, RAND(thinned) =%f1.3\n" % (RAND, RAND_thinned))
-            plt.subplot(221)
-            plt.imshow(pred_border)
-            plt.title("predicted label")
-            plt.subplot(222)
-            plt.imshow(true_border)
-            plt.title("true label")
-            plt.subplot(223)
-            plt.imshow(pred_border_thinned)
-            plt.title("predicted thinned label")
-            plt.subplot(224)
-            plt.imshow(true_border_thinned)
-            plt.title("true thinned label")
-            plt.show()
-
+        dst.append([pred_path, true_path, RAND_label, MI_label, RAND, precision, recall, F_score, adapted_RAND_error])
 
     dst = pd.DataFrame(dst,
-                       columns=['pred_path', 'true_path', 'RAND', 'RAND_thinned'])
+                       columns=['pred_path', 'true_path', 'RAND_label', 'MI_label', 'RAND', 'precision', 'recall', 'F_score', 'adapted_RAND_error'])
     dst.to_csv(output_path)
 
     print ("Saved to %s" % output_path)
 
 
+test()
 main()
