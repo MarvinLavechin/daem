@@ -1,10 +1,10 @@
 # Predicting membrane, mitochondria and synapse labels of the Drosophila 2D dataset by paired image-to-image translation
 
-### Typical result
+## Typical result
 
 ![Result](Example_2D_3Labels_result.jpg)
 
-### Preparation
+## Preparation
 
 Combine input and output images
 ```bash
@@ -20,7 +20,7 @@ python imagetranslation/tools/split.py \
   --dir datasets/vnc/combined
 ```
 
-### Training and prediction
+## Training and prediction
 
 Train the classifier for the direction "AtoB" (EM images to labels) using paired-to-image translation with a residual net as the generator:
 ```bash
@@ -56,11 +56,11 @@ python imagetranslation/translate.py   --mode test \
 The test run will output an HTML file at `temp/Example_2D_3Labels/test/index.html` that shows input/output/target image sets.
 
 
-### Evaluation
+## Evaluation
 
 Evaluate the model prediction for each channel on the four images of the test set:
 
-#### Synapses
+### Synapses
 
 Evaluate `--channel 0` (red channel) of the output on the test images:
 
@@ -80,7 +80,7 @@ precision = 1.000, recall = 0.347, F-Score = 0.502 and and adjusted RAND error =
 **There are no false positive synapses, but almost two third of them are not recognized (in a single section).**
 
 
-#### Mitochondria
+### Mitochondria
 
 Evaluate `--channel 1` (green channel) of the output on the test images:
 
@@ -99,7 +99,7 @@ precision = 0.961, recall = 0.911, F-Score = 0.935 and and adjusted RAND error =
 
 **Most of the mitochondria are correctly labelled and segmented.**
 
-#### Membrane
+### Membrane
 
 Evaluate `--channel 2` (blue channel) of the output on the test images:
 
@@ -128,7 +128,7 @@ python tools/evaluate.py \
   --output temp/Example_2D_3Labels/train/evaluation-training-membranes.csv  --channel 0
 ```
 
-### Notes
+## Notes
 
 A short description of the evaluation metrics can be found on the [SNEMI3D website](http://brainiac2.mit.edu/isbi_challenge/evaluation
 ) for which an [matlab implementation](SNEMI3D_metrics.m) is available.
