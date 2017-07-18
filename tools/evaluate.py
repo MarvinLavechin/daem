@@ -51,14 +51,15 @@ def SNEMI3D_metrics(true_segm, pred_segm):
 
 def test():
 
+    inp_path = '../temp/Example_2D_3Labels/test/images/02-inputs.png'
     pred_path = '../temp/Example_2D_3Labels/test/images/02-outputs.png'
     true_path = '../temp/Example_2D_3Labels/test/images/02-targets.png'
 
     print ('Evaluate prediction %s vs truth %s' % (pred_path, true_path))
 
-    channel = 2
+    channel = 0
     threshold = 0.5
-    segment_by = 1
+    segment_by = 0
     true_label = imread(true_path)[:, :, channel] > threshold
     pred_label = imread(pred_path)[:, :, channel] > threshold
 
@@ -73,27 +74,32 @@ def test():
     print("RAND = %1.3f, precision = %1.3f, recall = %1.3f, F_score = %1.3f, adapted_RAND_error = %1.3f"
           % (RAND, precision, recall, F_score, adapted_RAND_error))
 
-    plt.subplot(221)
+    plt.subplot(231)
+    plt.imshow(imread(inp_path, as_grey=True), cmap='gray')
+    plt.title("input")
+    plt.axis('off')
+
+    plt.subplot(232)
     plt.imshow(pred_label, cmap='gray')
     plt.title("predicted label")
     plt.axis('off')
 
-    plt.subplot(222)
+    plt.subplot(233)
     plt.imshow(true_label, cmap='gray')
     plt.title("true label")
     plt.axis('off')
 
-    plt.subplot(223)
+    plt.subplot(235)
     plt.imshow(pred_segm)
     plt.title("predicted segmentation")
     plt.axis('off')
 
-    plt.subplot(224)
+    plt.subplot(236)
     plt.imshow(true_segm)
     plt.title("true segmentation")
     plt.axis('off')
 
-    plt.tight_layout()
+    # plt.tight_layout()
     plt.show()
 
 
