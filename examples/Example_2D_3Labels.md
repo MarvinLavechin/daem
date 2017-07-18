@@ -62,7 +62,7 @@ Evaluate the model prediction for each channel on the four images of the test se
 
 ### Synapses
 
-Evaluate `--channel 0` (red channel) of the output on the test images:
+Evaluate ```--channel 0``` (red channel) of the output on the test images:
 
 ```bash
 python tools/evaluate.py \
@@ -82,7 +82,7 @@ precision = 1.000, recall = 0.347, F-Score = 0.502 and and adjusted RAND error =
 
 ### Mitochondria
 
-Evaluate `--channel 1` (green channel) of the output on the test images:
+Evaluate ```--channel 1``` (green channel) of the output on the test images:
 
 ```bash
 python tools/evaluate.py \
@@ -101,7 +101,7 @@ precision = 0.961, recall = 0.911, F-Score = 0.935 and and adjusted RAND error =
 
 ### Membrane
 
-Evaluate `--channel 2` (blue channel) of the output on the test images:
+Evaluate ```--channel 2``` (blue channel) of the output on the test images:
 
 ```bash
 python tools/evaluate.py \
