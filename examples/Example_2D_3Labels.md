@@ -49,7 +49,6 @@ python imagetranslation/translate.py   --mode test \
   --checkpoint temp/Example_2D_3Labels/train \
   --input_dir datasets/vnc/combined/val \
   --output_dir temp/Example_2D_3Labels/test \
-  --model pix2pix   --generator resnet \
   --image_height 1024  --image_width 1024
 ```
 *It might take a while to load the model from the checkpoint, but computation is fast even without a GPU.*
@@ -58,7 +57,7 @@ The test run will output an HTML file at `temp/Example_2D_3Labels/test/index.htm
 
 ## Evaluation
 
-Evaluate the model prediction for each channel on the four images of the test set:
+Evaluate the model prediction for each channel on the four images in the test set.
 
 ### Synapses
 
@@ -69,6 +68,12 @@ python tools/evaluate.py \
   --predicted "temp/Example_2D_3Labels/test/images/*outputs.png" \
   --true "temp/Example_2D_3Labels/test/images/*targets.png" \
   --output temp/Example_2D_3Labels/test/evaluation-synapse.csv  --channel 0
+```
+
+or simply
+
+```bash
+bash tools/evaluate.sh temp/Example_2D_3Labels/test/images synapses
 ```
 
 ![Result](Example_2D_3Labels_eval_synapses.jpg)
@@ -91,6 +96,12 @@ python tools/evaluate.py \
   --output temp/Example_2D_3Labels/test/evaluation-mitochondria.csv  --channel 1
 ```
 
+or simply
+
+```bash
+bash tools/evaluate.sh temp/Example_2D_3Labels/test/images mitochondria
+```
+
 ![Result](Example_2D_3Labels_eval_mitochondria.jpg)
 
 Typical values are RAND=0.891, MI = 0.757 for the membrane label.
@@ -108,6 +119,12 @@ python tools/evaluate.py \
   --predicted "temp/Example_2D_3Labels/test/images/*outputs.png" \
   --true "temp/Example_2D_3Labels/test/images/*targets.png" \
   --output temp/Example_2D_3Labels/test/evaluation-membrane.csv  --channel 2  --segment_by 1
+```
+
+or simply
+
+```bash
+bash tools/evaluate.sh temp/Example_2D_3Labels/test/images membranes
 ```
 
 ![Result](Example_2D_3Labels_eval_membranes.jpg)
