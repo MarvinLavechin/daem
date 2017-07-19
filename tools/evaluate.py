@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 from collections import Counter
 
+import os
 import argparse
 import glob
 from sklearn.metrics.cluster import adjusted_rand_score, adjusted_mutual_info_score
@@ -74,6 +75,8 @@ def test():
     print("RAND = %1.3f, precision = %1.3f, recall = %1.3f, F_score = %1.3f, adapted_RAND_error = %1.3f"
           % (RAND, precision, recall, F_score, adapted_RAND_error))
 
+    plt.figure(figsize=(8,5.5))
+
     plt.subplot(231)
     plt.imshow(imread(inp_path, as_grey=True), cmap='gray')
     plt.title("input")
@@ -99,7 +102,7 @@ def test():
     plt.title("true segmentation")
     plt.axis('off')
 
-    # plt.tight_layout()
+    plt.subplots_adjust(left=0.01, right=0.99, top=0.95, bottom=0.01)
     plt.show()
 
 
@@ -127,6 +130,9 @@ def main():
 
     dst = []
     output_path = a.output
+    def relpath(image_path):
+        return os.path.relpath(image_path, os.path.split(output_path)[0])
+
 
     inp_paths = sorted(glob.glob(a.input)) if a.input else []
     pred_paths = sorted(glob.glob(a.predicted))
@@ -153,10 +159,12 @@ def main():
         print("RAND = %1.3f, precision = %1.3f, recall = %1.3f, F_score = %1.3f, adapted_RAND_error = %1.3f"
               % (RAND, precision, recall, F_score, adapted_RAND_error))
 
-        dst.append([pred_path, true_path, RAND_label, MI_label, RAND, precision, recall, F_score, adapted_RAND_error])
+        dst.append([relpath(pred_path), relpath(true_path), RAND_label, MI_label, RAND, precision, recall, F_score, adapted_RAND_error])
 
         # plotting
         if not a.plot == "nothing":
+
+            plt.figure(figsize=(8, 5.5))
 
             if inp_path:
                 plt.subplot(231)
@@ -184,7 +192,7 @@ def main():
             plt.title("true segmentation")
             plt.axis('off')
 
-            # plt.tight_layout()
+            plt.subplots_adjust(left=0.01, right=0.99, top=0.95, bottom=0.01)
 
             if a.plot == "save":
                 plt.savefig(output_path+"-sample%d.jpg" % index)
@@ -194,7 +202,8 @@ def main():
 
     dst = pd.DataFrame(dst,
                        columns=['pred_path', 'true_path', 'RAND_label', 'MI_label', 'RAND', 'precision', 'recall', 'F_score', 'adapted_RAND_error'])
-    dst.to_csv(output_path)
+    dst['sample'] = dst.index
+    dst.to_csv(output_path, index=False)
 
     print ("Saved to %s" % output_path)
 

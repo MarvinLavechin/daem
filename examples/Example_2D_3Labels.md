@@ -1,4 +1,4 @@
-# Predicting membrane, mitochondria and synapse labels of the Drosophila 2D dataset by paired image-to-image translation
+# Predicting membrane, mitochondria and synapse
 
 ## Typical result
 
@@ -6,7 +6,7 @@
 
 ## Preparation
 
-Combine input and output images
+Combine input and output images for the Drosophila VNC dataset
 ```bash
 python imagetranslation/tools/process.py \
   --operation combine \
@@ -121,7 +121,7 @@ python tools/evaluate.py \
   --output temp/Example_2D_3Labels/test/evaluation-membranes.csv  --channel 2  --segment_by 1
 ```
 
-or use the bash script which will output an summary image for each sample in the subdirectory `evaluation`:
+or use the bash script which will output an summary image for each sample as well:
 
 ```bash
 bash tools/evaluate.sh temp/Example_2D_3Labels/test membranes
