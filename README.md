@@ -11,6 +11,7 @@
 - Tensorflow 1.0
 - Scikit-learn 0.18
 - Pandas
+- Bokeh 12.6
 
 ### Preferred
 - Anaconda Python distribution
