@@ -21,9 +21,12 @@ membranes)
   ;;
 esac
 
+mkdir -p $1/evaluation
+
 python tools/evaluate.py \
-  --predicted "$1/*outputs.png" \
-  --true "$1/*targets.png" \
-  --output $1/evaluation-$2.csv  --channel $channel  --segment_by $background
+  --input "$1/images/*inputs.png" \
+  --predicted "$1/images/*outputs.png" \
+  --true "$1/images/*targets.png" \
+  --output $1/evaluation/$2.csv  --channel $channel  --segment_by $background  --plot save
 
 

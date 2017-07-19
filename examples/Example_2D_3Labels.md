@@ -70,7 +70,7 @@ python tools/evaluate.py \
   --output temp/Example_2D_3Labels/test/evaluation-synapses.csv  --channel 0
 ```
 
-or simply
+or use the bash script which will output an summary image for each sample in the subdirectory `evaluation`:
 
 ```bash
 bash tools/evaluate.sh temp/Example_2D_3Labels/test/images synapses
@@ -96,10 +96,10 @@ python tools/evaluate.py \
   --output temp/Example_2D_3Labels/test/evaluation-mitochondria.csv  --channel 1
 ```
 
-or simply
+or use the bash script which will output an summary image for each sample in the subdirectory `evaluation`:
 
 ```bash
-bash tools/evaluate.sh temp/Example_2D_3Labels/test/images mitochondria
+bash tools/evaluate.sh temp/Example_2D_3Labels/test mitochondria
 ```
 
 ![Result](Example_2D_3Labels_eval_mitochondria.jpg)
@@ -121,10 +121,10 @@ python tools/evaluate.py \
   --output temp/Example_2D_3Labels/test/evaluation-membranes.csv  --channel 2  --segment_by 1
 ```
 
-or simply
+or use the bash script which will output an summary image for each sample in the subdirectory `evaluation`:
 
 ```bash
-bash tools/evaluate.sh temp/Example_2D_3Labels/test/images membranes
+bash tools/evaluate.sh temp/Example_2D_3Labels/test membranes
 ```
 
 ![Result](Example_2D_3Labels_eval_membranes.jpg)
@@ -138,11 +138,9 @@ However, the segmentation of neurons does not depend on minor variation of the m
 
 
 You might want to evaluate the neuron segmentation during the training:
+
 ```bash
-python tools/evaluate.py \
-  --predicted "temp/Example_2D_3Labels/train/images/*outputs.png" \
-  --true "temp/Example_2D_3Labels/train/images/*targets.png" \
-  --output temp/Example_2D_3Labels/train/evaluation-training-membranes.csv  --channel 0
+bash tools/evaluate.sh temp/Example_2D_3Labels/train membranes
 ```
 
 ## Notes

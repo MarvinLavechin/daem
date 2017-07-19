@@ -106,12 +106,14 @@ def test():
 def main():
 
     parser = argparse.ArgumentParser()
+    parser.add_argument("--input", default=None, help="path/files for raw images (for plot)")
     parser.add_argument("--predicted", required=True, help="path/files for predicted labels")
     parser.add_argument("--true", required=True, help="path/files for true labels")
     parser.add_argument("--output", required=True, help="output path/files")
     parser.add_argument("--threshold", default=0.5, help="threshold for the predict label")
     parser.add_argument("--channel", type=int, default=0, help="channel to be evaluated")
     parser.add_argument("--segment_by", type=int, default=0, help="border value for segmentation into regions (e.g. membrane)")
+    parser.add_argument("--plot", default="nothing", choices=["nothing", "show", "save"])
 
     # Not implemented:
     # parser.add_argument("--fr", dest="fr", action="store_true", help="foreground restriction")
@@ -120,20 +122,18 @@ def main():
     # parser.add_argument("--bt", dest="bt", action="store_true", help="border thinning")
     # parser.add_argument("--no_bt", dest="bt", action="store_false", help="no border thinning")
     # parser.set_defaults(plot=False)
-    # parser.add_argument("--plot", dest="plot", action="store_true", help="plot images")
-    # parser.add_argument("--no_plot", dest="plot", action="store_false", help="don't plot images")
-    # parser.set_defaults(plot=True)
 
     a = parser.parse_args()
 
     dst = []
     output_path = a.output
 
+    inp_paths = sorted(glob.glob(a.input)) if a.input else []
     pred_paths = sorted(glob.glob(a.predicted))
     true_paths = sorted(glob.glob(a.true))
 
 
-    for pred_path, true_path in zip(pred_paths, true_paths):
+    for index, (inp_path, pred_path, true_path) in enumerate(map(None, inp_paths, pred_paths, true_paths)):
 
         print ('Evaluate prediction %s vs truth %s' % (pred_path, true_path))
 
@@ -154,6 +154,43 @@ def main():
               % (RAND, precision, recall, F_score, adapted_RAND_error))
 
         dst.append([pred_path, true_path, RAND_label, MI_label, RAND, precision, recall, F_score, adapted_RAND_error])
+
+        # plotting
+        if not a.plot == "nothing":
+
+            if inp_path:
+                plt.subplot(231)
+                plt.imshow(imread(inp_path, as_grey=True), cmap='gray')
+                plt.title("input")
+                plt.axis('off')
+
+            plt.subplot(232)
+            plt.imshow(pred_label, cmap='gray')
+            plt.title("predicted label")
+            plt.axis('off')
+
+            plt.subplot(233)
+            plt.imshow(true_label, cmap='gray')
+            plt.title("true label")
+            plt.axis('off')
+
+            plt.subplot(235)
+            plt.imshow(pred_segm)
+            plt.title("predicted segmentation")
+            plt.axis('off')
+
+            plt.subplot(236)
+            plt.imshow(true_segm)
+            plt.title("true segmentation")
+            plt.axis('off')
+
+            # plt.tight_layout()
+
+            if a.plot == "save":
+                plt.savefig(output_path+"-sample%d.jpg" % index)
+            elif a.plot == "show":
+                plt.show()
+
 
     dst = pd.DataFrame(dst,
                        columns=['pred_path', 'true_path', 'RAND_label', 'MI_label', 'RAND', 'precision', 'recall', 'F_score', 'adapted_RAND_error'])
