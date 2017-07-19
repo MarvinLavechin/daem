@@ -67,7 +67,7 @@ Evaluate `--channel 0` (red channel) of the output on the test images:
 python tools/evaluate.py \
   --predicted "temp/Example_2D_3Labels/test/images/*outputs.png" \
   --true "temp/Example_2D_3Labels/test/images/*targets.png" \
-  --output temp/Example_2D_3Labels/test/evaluation-synapse.csv  --channel 0
+  --output temp/Example_2D_3Labels/test/evaluation-synapses.csv  --channel 0
 ```
 
 or simply
@@ -110,7 +110,7 @@ precision = 0.961, recall = 0.911, F-Score = 0.935 and and adjusted RAND error =
 
 **Most of the mitochondria are correctly labelled and segmented.**
 
-### Membrane
+### Membranes and segmentation of neurons
 
 Evaluate `--channel 2` (blue channel) of the output on the test images:
 
@@ -118,7 +118,7 @@ Evaluate `--channel 2` (blue channel) of the output on the test images:
 python tools/evaluate.py \
   --predicted "temp/Example_2D_3Labels/test/images/*outputs.png" \
   --true "temp/Example_2D_3Labels/test/images/*targets.png" \
-  --output temp/Example_2D_3Labels/test/evaluation-membrane.csv  --channel 2  --segment_by 1
+  --output temp/Example_2D_3Labels/test/evaluation-membranes.csv  --channel 2  --segment_by 1
 ```
 
 or simply
