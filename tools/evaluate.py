@@ -12,7 +12,6 @@ import numpy as np
 
 from skimage.io import imread
 from skimage.measure import label as regions
-# from skimage.morphology import skeletonize
 from scipy.sparse import csr_matrix
 from matplotlib import pyplot as plt
 
@@ -117,14 +116,6 @@ def main():
     parser.add_argument("--channel", type=int, default=0, help="channel to be evaluated")
     parser.add_argument("--segment_by", type=int, default=0, help="border value for segmentation into regions (e.g. membrane)")
     parser.add_argument("--plot", default="nothing", choices=["nothing", "show", "save"])
-
-    # Not implemented:
-    # parser.add_argument("--fr", dest="fr", action="store_true", help="foreground restriction")
-    # parser.add_argument("--no_fr", dest="fr", action="store_false", help="no foreground restriction")
-    # parser.set_defaults(plot=False)
-    # parser.add_argument("--bt", dest="bt", action="store_true", help="border thinning")
-    # parser.add_argument("--no_bt", dest="bt", action="store_false", help="no border thinning")
-    # parser.set_defaults(plot=False)
 
     a = parser.parse_args()
 
