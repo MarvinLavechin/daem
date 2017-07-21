@@ -5,7 +5,7 @@ import numpy as np
 from bokeh.palettes import Viridis10 as palette
 from bokeh.layouts import layout, column, row
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
-from bokeh.models import HoverTool, Div, DataTable, TableColumn, NumberFormatter, LinearAxis, Select, CustomJS, Slider
+from bokeh.models import HoverTool, Div, DataTable, TableColumn, NumberFormatter, LinearAxis, Select, CustomJS, Slider, Button
 
 try:
     from functools import lru_cache
@@ -46,24 +46,45 @@ def show_page(source, choices):
 
     hover = custom_hover(choices)
 
-    desc = Div(text="""
+    description = Div(text="""
         <h1>An Interactive Explorer for Evaluation Results</h1>
         <p>
         Interact with the widgets on the left to show correlations of metrics.
         </p>
         """, width=1000)
 
-    main_row = show_correlation(source, choices)
-    development_plot = show_series(source, choices, hover)
-    data_table = show_datatable(source, choices)
+    select_label = show_selection(csv_dir)
+    fig_correlation = show_correlation(source, choices)
+    fig_series = show_series(source, choices, hover)
+    fig_datatable = show_datatable(source, choices)
     l = layout([
-        [desc],
-        [main_row],
-        [development_plot],
-        [data_table]
+        [description],
+        select_label + fig_correlation,
+        fig_series,
+        fig_datatable
     ], sizing_mode='fixed')
 
     show(l)
+
+def show_selection(csv_dir):
+
+    desc = Div(text="""
+        <h2>Labels</h2>
+        <p>
+        Choose label to evaluate.
+        </p>
+        """, width=200)
+
+    labels = ('mitochondria', 'synapses', 'membranes')
+
+    elements = [desc]
+
+    for label in labels:
+        b = Button(label=label)
+        b.callback = CustomJS(code="""window.open("%s","_self");""" % (label+'.html'))
+        elements.append(b)
+
+    return [column(elements)]
 
 
 def custom_hover(column_names):
@@ -109,9 +130,8 @@ def show_correlation(source, choices):
 
     # layout with description and widgets on left side
     widgets = column(description, ticker_xaxis, ticker_yaxis)
-    fig_correlations = row(widgets, fig)
 
-    return fig_correlations
+    return [widgets, fig]
 
 
 def ticker_axis(source, choices, fig, plot, axis):
@@ -175,7 +195,7 @@ def show_series(source, choices, hover):
     # layout with description and widgets on top
     fig_series = column(row(description, slider), fig)
 
-    return fig_series
+    return [fig_series]
 
 
 def movering_average_slider(source, choices):
@@ -227,7 +247,10 @@ def show_datatable(source, choices):
 
     data_table = DataTable(source=source, columns=choosen_columns, width=1000)
 
-    return column(description, data_table)
+    # layout with title at top
+    fig_datatable = column(description, data_table)
+
+    return [fig_datatable]
 
 
 main()
