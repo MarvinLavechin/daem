@@ -190,7 +190,7 @@ def show_series(source, choices, hover):
     fig.legend.click_policy = "hide"
 
     # widgets: a slider for the moving average for each variable in choices
-    slider = movering_average_slider(source, choices)
+    slider = moving_average_slider(source, choices)
 
     # layout with description and widgets on top
     fig_series = column(row(description, slider), fig)
@@ -198,7 +198,7 @@ def show_series(source, choices, hover):
     return [fig_series]
 
 
-def movering_average_slider(source, choices):
+def moving_average_slider(source, choices):
 
     callback = CustomJS(args=dict(source=source, args=ColumnDataSource({'column_names': choices})), code="""
         function simple_moving_averager(period) {
