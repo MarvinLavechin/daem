@@ -112,9 +112,9 @@ def main():
     parser.add_argument("--predicted", required=True, help="path/files for predicted labels")
     parser.add_argument("--true", required=True, help="path/files for true labels")
     parser.add_argument("--output", required=True, help="output path/files")
-    parser.add_argument("--threshold", default=0.5, help="threshold for the predict label")
+    parser.add_argument("--threshold", type=int, default=127, help="threshold for the predicted label")
     parser.add_argument("--channel", type=int, default=0, help="channel to be evaluated")
-    parser.add_argument("--segment_by", type=int, default=0, help="border value for segmentation into regions (e.g. membrane)")
+    parser.add_argument("--segment_by", type=int, default=0, help="border value for segmentation into regions")
     parser.add_argument("--plot", default="nothing", choices=["nothing", "show", "save"])
 
     a = parser.parse_args()
