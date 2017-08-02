@@ -7,7 +7,7 @@ Using conda (Anaconda Python distribution):
 1) Mac OS-X without GPU
 
 ```bash
-conda create --name heuhaufen  python=2 tensorflow scikit-learn scikit-image pandas=0.18.2 bokeh=12.6
+conda create --name heuhaufen  python=2 tensorflow scikit-learn scikit-image pandas=0.19.2 bokeh=12.6
 source activate heuhaufen
 pip install tifffile
 
