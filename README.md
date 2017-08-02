@@ -4,13 +4,14 @@
 
 ### Prerequisites
 - Linux or OSX
-- Python 2 or Python 3
+- Python 2 (full Python 3 will be available soon)
 - CPU or NVIDIA GPU + CUDA CuDNN
 
 ### Requirements
 - Tensorflow 1.0
 - Scikit-learn 0.18
-- Pandas
+- Scikit-image
+- Pandas 0.18.2
 - Bokeh 12.6
 
 ### Preferred
@@ -19,7 +20,7 @@
 
 ## Getting Started
 
-- Install Tensorflow, e.g. [with Anaconda](https://www.tensorflow.org/install/install_mac#installing_with_anaconda)
+- Create environment `heuhaufen` and install requirements, see [instructions](CONDA.md)
 - Clone this repository
 
 ```bash
