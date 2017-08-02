@@ -46,6 +46,7 @@ tensorboard --logdir temp/Example_2D_3Labels
 Test the model
 ```bash
 python imagetranslation/translate.py   --mode test \
+  --model pix2pix \
   --checkpoint temp/Example_2D_3Labels/train \
   --input_dir datasets/vnc/combined/val \
   --output_dir temp/Example_2D_3Labels/test \
