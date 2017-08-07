@@ -69,14 +69,14 @@ done
 
 # NOTE: Information about generator type / depath can be obtained by order of files only
 
-sed -n 1p temp/publication/how_deep/test/1/evaluation-membranes.csv > temp/publication/how_deep/evaluation-membranes.csv
-sed -n 1p temp/publication/how_deep/test/1/evaluation-mitochondria.csv > temp/publication/how_deep/evaluation-mitochondria.csv
-sed -n 1p temp/publication/how_deep/test/1/evaluation-synapses.csv > temp/publication/how_deep/evaluation-synapses.csv
+sed -n 1p temp/publication/how_deep/test/1/evaluation/membranes.csv > temp/publication/how_deep/evaluation-membranes.csv
+sed -n 1p temp/publication/how_deep/test/1/evaluation/mitochondria.csv > temp/publication/how_deep/evaluation-mitochondria.csv
+sed -n 1p temp/publication/how_deep/test/1/evaluation/synapses.csv > temp/publication/how_deep/evaluation-synapses.csv
 for i in `seq 1 $counter`;
 do
-	sed 1d temp/publication/how_deep/test/$i/evaluation-membranes.csv >> temp/publication/how_deep/evaluation-membranes.csv
-	sed 1d temp/publication/how_deep/test/$i/evaluation-mitochondria.csv >> temp/publication/how_deep/evaluation-mitochondria.csv
-	sed 1d temp/publication/how_deep/test/$i/evaluation-synapses.csv >> temp/publication/how_deep/evaluation-synapses.csv
+	sed 1d temp/publication/how_deep/test/$i/evaluation/membranes.csv >> temp/publication/how_deep/evaluation-membranes.csv
+	sed 1d temp/publication/how_deep/test/$i/evaluation/mitochondria.csv >> temp/publication/how_deep/evaluation-mitochondria.csv
+	sed 1d temp/publication/how_deep/test/$i/evaluation/synapses.csv >> temp/publication/how_deep/evaluation-synapses.csv
 done
 
 
