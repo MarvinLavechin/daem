@@ -22,7 +22,7 @@ bash publication/how_deep/how_deep.sh
 ```
 
 There will be two files in the folder `temp/publication/how_deep/test`: `summary_long.csv` and `summary_wide.scv`.
-The above diagrams are created from the F-score (=adapted RAND error) for each test image. The curves represent a fit with a quadratic function for the number of layers.
+The above diagrams are created from the F-score (=adapted RAND score) for each test image. The curves represent a fit with a quadratic function for the number of layers.
 
 *Note:*
 
