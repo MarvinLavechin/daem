@@ -1,7 +1,7 @@
 # Dense reconstruction from electron microscope images
-## Comparing different generators and depths
+## Comparing different classic loss functions
 
-![unet](adapted_RAND_classic_loss_functions.jpg)
+![loss_functions](adapted_RAND_classic_loss_functions.jpg)
 
 Mean and standard deviation of the adapted RAND score of 4 test images for 3 model trained on 3 different splits for the train and test sets.
 
@@ -23,7 +23,16 @@ bash publication/loss_functions/survery_loss_functions.sh
 ```
 
 There will be two files in the folder `temp/publication/loss_functions/test`: `summary_long.csv` and `summary_wide.scv`.
-The above diagrams are created from the F-score (=adapted RAND error) for each test image. The curves represent a fit with a quadratic function for the number of layers.
+The above diagrams are created from the F-score (=adapted RAND score) for each test image. The curves represent a fit with a quadratic function for the number of layers.
 
-*Note:*
+*Notes:*
+
+Loss functions:
+- cross entropy (approximated)
+- dice
+- hinge
+- logistic
+- softmax cross entropy
+- square
+
 
