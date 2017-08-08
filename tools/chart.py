@@ -225,7 +225,6 @@ def moving_average_slider(source, choices):
             data['MA_'+column_name]  = data[column_name].map(simple_moving_averager(cb_obj.value));
         }
 
-        data['MA_RAND']  = data['RAND'].map(simple_moving_averager(cb_obj.value));
         source.change.emit();
         """)
 
@@ -253,4 +252,5 @@ def show_datatable(source, choices):
     return [fig_datatable]
 
 
-main()
+if __name__ == "__main__":
+    main()
