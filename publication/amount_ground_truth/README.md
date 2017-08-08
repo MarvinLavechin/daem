@@ -1,5 +1,5 @@
 # Dense reconstruction from electron microscope images
-## Dependency on amount of ground truth
+## Dependency on the amount of ground truth
 
 ![amount_vs_adapted_RAND](adapted_RAND_amount_ground_truth.jpg)
 
@@ -21,5 +21,4 @@ bash publication/amount_ground_truth/test_amount.sh
 
 There will be 3 files in the folder `temp/publication/amount_ground_truth/test`: `summary_long.csv`, `summary_wide.scv`, and `averages_wide.csv`.
 
-### Notes
 
