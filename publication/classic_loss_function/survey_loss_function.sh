@@ -93,8 +93,6 @@ do
 done
 
 
-
-
 ### Test and evaluate
 
 counter=0
@@ -107,41 +105,17 @@ do
 	--checkpoint temp/publication/loss_functions/train/$counter \
 	--output_dir temp/publication/loss_functions/test/$counter \
 	--input_dir datasets/vnc/combined$i/val \
-    --image_width 1024  --image_height 1024 
-	python tools/evaluate.py \
-  	--predicted "temp/publication/loss_functions/test/$counter/images/*outputs.png" \
-  	--true "temp/publication/loss_functions/test/$counter/images/*targets.png" \
-  	--output temp/publication/loss_functions/test/$counter/evaluation-synapses.csv  --channel 0
-	python tools/evaluate.py \
-  	--predicted "temp/publication/loss_functions/test/$counter/images/*outputs.png" \
-  	--true "temp/publication/loss_functions/test/$counter/images/*targets.png" \
-  	--output temp/publication/loss_functions/test/$counter/evaluation-mitochondria.csv  --channel 1
-	python tools/evaluate.py \
-  	--predicted "temp/publication/loss_functions/test/$counter/images/*outputs.png" \
-  	--true "temp/publication/loss_functions/test/$counter/images/*targets.png" \
-  	--output temp/publication/loss_functions/test/$counter/evaluation-membranes.csv  --channel 2  --segment_by 1
+    --image_width 1024  --image_height 1024
+	bash tools/evaluate.sh temp/publication/loss_functions/test/$counter synapses
+	bash tools/evaluate.sh temp/publication/loss_functions/test/$counter mitochondria
+	bash tools/evaluate.sh temp/publication/loss_functions/test/$counter membranes
 done
 done
 
 
-
-
-### Accumulate results 
-
-# NOTE: Information about generator type / depath can be obtained by order of files only
-
-sed -n 1p temp/publication/loss_functions/test/1/evaluation-membranes.csv > temp/publication/loss_functions/evaluation-membranes.csv
-sed -n 1p temp/publication/loss_functions/test/1/evaluation-mitochondria.csv > temp/publication/loss_functions/evaluation-mitochondria.csv
-sed -n 1p temp/publication/loss_functions/test/1/evaluation-synapses.csv > temp/publication/loss_functions/evaluation-synapses.csv
-for i in `seq 1 $counter`;
-do
-	sed 1d temp/publication/loss_functions/test/$i/evaluation-membranes.csv >> temp/publication/loss_functions/evaluation-membranes.csv
-	sed 1d temp/publication/loss_functions/test/$i/evaluation-mitochondria.csv >> temp/publication/loss_functions/evaluation-mitochondria.csv
-	sed 1d temp/publication/loss_functions/test/$i/evaluation-synapses.csv >> temp/publication/loss_functions/evaluation-synapses.csv
-done
-
-
-
+### Accumulate results
+# Using the Python script to link evaluation results in CSV fules with parameters from JSON files
+pyhton publication/loss_functions/aggregate.py
 
 
 
