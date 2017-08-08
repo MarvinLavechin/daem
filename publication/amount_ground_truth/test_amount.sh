@@ -15,7 +15,7 @@ done
 
 for i in `seq 1 16`;
 do
-	fraction=$(echo "scale=2; $i / 16" | bc)
+	fraction=$(echo "scale=2; $i / 20" | bc)
 	python imagetranslation/tools/split.py --train_frac $fraction \
 	--dir temp/publication/amount_ground_truth/datasets/combined$i
 done
@@ -46,6 +46,10 @@ do
 	bash tools/evaluate.sh temp/publication/amount_ground_truth/test/$i mitochondria
 	bash tools/evaluate.sh temp/publication/amount_ground_truth/test/$i membranes
 done
+
+### Accumulate results
+# Using the Python script to link evaluation results in CSV files
+pyhton publication/amount_groundtruth/aggregate.py
 
 
 
