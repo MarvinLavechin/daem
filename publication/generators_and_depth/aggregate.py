@@ -10,7 +10,7 @@ from bokeh.models import HoverTool, Div, DataTable, TableColumn, NumberFormatter
 import json    # must be imported after bokeh
 
 
-def main(test_path='/Volumes/secured/temp/publication/how_deep/test'):
+def main(test_path='temp/publication/how_deep/test'):
     labels = ['membranes', 'synapses', 'mitochondria']
 
     # concatenate the evaluation and parameters for all runs
