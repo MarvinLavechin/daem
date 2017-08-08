@@ -20,6 +20,6 @@ If you use the `heuhaufen` library in your research, please cite our paper ([Bio
 ### Figures
 
 1. [Comparing different generators and depths](generators_and_depth/README.md)
-2. Comparing different classic loss function
+2. [Comparing different classic loss function](classic_loss_functions/README.md)
 3. Evaluate amount of ground truth
 4. Effect of scaling/resolution
