@@ -1,4 +1,4 @@
-# Predicting membranes
+# Predicting membranes, mitochondria and synapses
 
 ## Typical result
 
