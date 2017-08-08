@@ -21,5 +21,5 @@ If you use the `heuhaufen` library in your research, please cite our paper ([Bio
 
 1. [Comparing different generators and depths](generators_and_depth/README.md)
 2. [Comparing different classic loss function](classic_loss_function/README.md)
-3. Evaluate amount of ground truth
-4. Effect of scaling/resolution
+3. [Evaluate amount of ground truth](amount_ground_truth/README.md)
+4. [Effect of scaling/resolution](scaling_resolution/README.md)
