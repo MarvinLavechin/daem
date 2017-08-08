@@ -39,7 +39,7 @@ def read_run_from_csv(test_path, run, label):
     df = pandas.read_csv(os.path.join(base_path, 'evaluation/%s.csv' % label))  # no index_col
 
     # add parameters
-    df['resolution'] = 8/run   # pixel resolution: run 1 = 8nm, run 2 = 4nm, run 4 = 2nm
+    df['resolution'] = 2*run   # pixel resolution: run 1 = 2nm, run 2 = 4nm, run 4 = 8nm
     df['label'] = label
     df['run'] = run
 
