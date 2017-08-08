@@ -3,7 +3,7 @@
 
 ![loss_functions](adapted_RAND_classic_loss_functions.jpg)
 
-Mean and standard deviation of the adapted RAND score of 4 test images for 3 model trained on 3 different splits for the train and test sets.
+Mean and standard deviation of the adapted RAND score of 4 test images each for 3 models (n=2x4=12). The models are trained on 3 different splits for the train and test sets.
 
 A residual net with 9 residual layers (= total 24 layers) was used for the generator.
 
@@ -28,11 +28,11 @@ The above diagrams are created from the F-score (=adapted RAND score) for each t
 *Notes:*
 
 Loss functions:
-- cross entropy (approximated)
-- dice
-- hinge
-- logistic
-- softmax cross entropy
-- square
+- cross entropy (approximated): Calculating the classic cross entropy has [numerical stability issues](https://github.com/Theano/Theano/issues/3162), but it works well using log(y) = (y-1) - (y-1)^2/2 + O(y^3).
+- dice: loss based on the differentiable [DICE coefficient](https://en.wikipedia.org/wiki/Soerensen-Dice_coefficient)
+- hinge: [hinge loss](https://en.wikipedia.org/wiki/Loss_functions_for_classification)
+- logistic: [logistic loss](https://en.wikipedia.org/wiki/Loss_functions_for_classification)
+- softmax cross entropy: [softmax](https://en.wikipedia.org/wiki/Softmax_function) [cross entropy](https://en.wikipedia.org/wiki/Loss_functions_for_classification)
+- square: [square loss](https://en.wikipedia.org/wiki/Loss_functions_for_classification)
 
 
