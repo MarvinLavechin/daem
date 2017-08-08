@@ -2,15 +2,10 @@ import os
 import pandas
 import numpy as np
 
-from bokeh.palettes import Viridis4 as palette
-from bokeh.layouts import layout, column, row
-from bokeh.plotting import figure, output_file, show, ColumnDataSource
-from bokeh.models import HoverTool, Div, DataTable, TableColumn, NumberFormatter, LinearAxis, Select, CustomJS, Slider, Button
-
-import json    # must be imported after bokeh
+import json
 
 
-def main(test_path='/Volumes/secured/temp/publication/loss_functions/test'):
+def main(test_path='temp/publication/loss_functions/test'):
     labels = ['membranes', 'synapses', 'mitochondria']
 
     # concatenate the evaluation and parameters for all runs
@@ -62,5 +57,4 @@ def read_run_from_json_and_csv(test_path, run, label):
 
 if __name__ == "__main__":
     main()
-else:
-    main()
+
