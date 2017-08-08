@@ -3,7 +3,7 @@
 
 |u net|residual net|
 |---|---|
-|![unet](adapted_RAND_du_net.jpg)|![unet](adapted_RAND_res_net.jpg)|
+|![unet](adapted_RAND_u_net.jpg)|![unet](adapted_RAND_res_net.jpg)|
 
 |highway net|dense net|
 |---|---|
