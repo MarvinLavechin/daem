@@ -7,7 +7,7 @@ A residual net with 9 residual layers (= total 24 layers) was used for the gener
 
 A lower resolution (8nm/pixel) can drastically improve synapses recognition, compared with the original resolution (4nm/pixel).
 Interestingly, a higher resolution (2nm/pixel) can lead to complete failure on learning the synapse and mitochondria labels.
-Training of synapse label sometimes failes even on the original resolution.
+Training of synapse label sometimes fails even on the original resolution.
 
 ### Reproduce results
 
@@ -22,10 +22,10 @@ bash publication/scaling_resolution/test_scaling.sh
 There will be two files in the folder `temp/publication/scaling/test`: `summary_long.csv` and `summary_wide.scv`.
 The above diagrams contain mean and SD for the F-score (=adapted RAND score) for each test image.
 
-### Notes
+### Additional results
 
 |resolution|![](top.jpg)|
 |---|---|
-|2nm|![](res_2nm.jpg)|
-|4nm|![](res_4nm.jpg)|
-|8nm|![](res_8nm.jpg)|
+|2 nm|![](res_2nm.jpg)|
+|4 nm|![](res_4nm.jpg)|
+|8 nm|![](res_8nm.jpg)|
