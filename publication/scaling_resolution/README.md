@@ -26,6 +26,6 @@ The above diagrams contain mean and SD for the F-score (=adapted RAND score) for
 
 |resolution|![](top.jpg)|
 |---|---|
-|2 nm|![](res_2nm.jpg)|
-|4 nm|![](res_4nm.jpg)|
-|8 nm|![](res_8nm.jpg)|
+|2 nm / pixel|![](res_2nm.jpg)|
+|4 nm / pixel|![](res_4nm.jpg)|
+|8 nm / pixel|![](res_8nm.jpg)|
