@@ -24,3 +24,8 @@ The above diagrams contain mean and SD for the F-score (=adapted RAND score) for
 
 ### Notes
 
+|resolution|![](top.jpg)|
+|---|---|
+|2nm|![](res_2nm.jpg)|
+|4nm|![](res_4nm.jpg)|
+|8nm|![](res_8nm.jpg)|
