@@ -21,7 +21,7 @@ Run the training, test and aggregate the data
 bash publication/how_deep/how_deep.sh
 ```
 
-There will be two files in the folder 'temp/publication/how_deep/test': 'summary_long.csv' and 'summary_wide.scv'.
+There will be two files in the folder `temp/publication/how_deep/test`: `summary_long.csv` and `summary_wide.scv`.
 The above diagrams are created from the F-score (=adapted RAND error) for each test image. The curves represent a fit with a quadratic function for the number of layers.
 
 *Note:*
@@ -34,3 +34,5 @@ The above diagrams are created from the F-score (=adapted RAND error) for each t
 |dense net|3 + 2 * n_dense_blocks * n_dense_layers + 3|
 
 The additional 6 layers for residual, highway and dense net correspond to the 3 encoder and 3 decoder layers.
+
+The u net contains fewer layers, but has a filter size of 64 instead of 32 for residual, highway and dense net.
