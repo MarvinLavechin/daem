@@ -4,9 +4,7 @@
 |u net|residual net|
 |---|---|
 |![unet](adapted_RAND_u_net.jpg)|![unet](adapted_RAND_res_net.jpg)|
-|---|---|
 |highway net|dense net|
-|---|---|
 |![highwaynet](adapted_RAND_highway_net.jpg)|![densenet](adapted_RAND_dense_net.jpg)|
 
 The residual net with 9 residual layers (= total 24 layers) performs best on membranes, mitochondria and synapses.
