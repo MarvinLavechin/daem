@@ -17,6 +17,9 @@ from matplotlib import pyplot as plt
 
 
 def segmentation_metrics(true_label, pred_label):
+    """
+    Implements pixel wise classic (adjusted for chance) RAND and MI score.
+    """
 
     RAND_label = adjusted_rand_score(true_label.ravel(), pred_label.ravel())
     MI_label = adjusted_mutual_info_score(true_label.ravel(), pred_label.ravel())
@@ -25,6 +28,10 @@ def segmentation_metrics(true_label, pred_label):
 
 
 def SNEMI3D_metrics(true_segm, pred_segm):
+    """
+    Implements segmentation wise scores from the SNEMI3D challenge.
+    """
+
     n = true_segm.size
     overlap = Counter(zip(true_segm.ravel(), pred_segm.ravel()))
     data = overlap.values()
