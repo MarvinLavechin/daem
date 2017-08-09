@@ -12,6 +12,6 @@ source activate heuhaufen
 4. Predicting the cytoplasma and overlap between adjacent regions for three-dimensional reconstruction
 5. Prediction-correction using adjacent images
 6. Training using sparse annotations
-7. [Training using unpaired annotation](Transfer/README.md)
+7. [Training using unpaired annotation](transfer/README.md)
 8. Segmentation for correlative microscopy
 9. Detection and removal of artifacts
