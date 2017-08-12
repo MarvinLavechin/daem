@@ -5,6 +5,10 @@
 ![Result](Example_transfer_result.jpg)
 
 
+## Preparation
+
+Convert grayscale image to RBG using imagemagick or FIJI.
+
 ## Unpaired image to label translation
 
 Directly
