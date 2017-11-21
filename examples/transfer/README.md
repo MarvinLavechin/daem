@@ -42,7 +42,7 @@ python imagetranslation/tools/process.py \
 Train the classifier for the direction "AtoB" (EM images to labels) using bidirectional paired image-to-label translation with a residual net as the generator:
 ```bash
 python imagetranslation/translate.py   --mode train \
-  --input_dir datasets/cortex/combined \
+  --input_dir datasets/cortex/paired_annotation/combined \
   --output_dir temp/Example_transfer/train \
   --which_direction AtoB  --Y_loss square \
   --model pix2pix2   --generator resnet \
