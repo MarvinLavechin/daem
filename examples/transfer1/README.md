@@ -1,5 +1,7 @@
 # Transfering paired to unpaired image translation
 
+Here, we want to learn a transfer function from the mouse raw stack to the drosophila labeled stack.
+
 ## Typical result
 
 ![Result](Example_transfer_result.jpg)
