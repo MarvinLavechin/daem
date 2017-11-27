@@ -26,6 +26,8 @@ python imagetranslation/translate.py --mode train \
 
 ```
 
+The training may take 1 day using a GPU.
+
 Test the model :
 ```bash
 python imagetranslation/translate.py   --mode test \
