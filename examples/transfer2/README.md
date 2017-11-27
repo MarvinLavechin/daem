@@ -32,9 +32,10 @@ Test the model :
 ```bash
 python imagetranslation/translate.py   --mode test \
   --checkpoint temp/Example_Domain_Translation/train \
-  --input_dir datasets/cortex/stack1/val \
+  --input_dir datasets/cortex/stack1/raw/val \
   --output_dir temp/Example_Domain_Translation/test \
-  --image_height 1024  --image_width 1024
+  --model CycleGAN \
+  --image_height 1024 --image_width 512
 ```
 *It might take a while to load the model from the checkpoint, but computation is fast even without a GPU.*
 The test run will output an HTML file at `temp/Example_Domain_Translation/test/index.html` that shows input/reverse_output/output/target image sets.
