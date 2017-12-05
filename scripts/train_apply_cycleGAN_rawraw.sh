@@ -63,7 +63,7 @@ TEST_COMMAND="python imagetranslation/translate.py --mode test \
 --model CycleGAN \
 --input_dir $INPUT_DIR/val \
 --output_dir $OUTPUT_DIR_RESULTS \
---image_height 512\
+--image_height 512 \
 --image_width 512"
 
 eval $TEST_COMMAND
