@@ -1,5 +1,6 @@
 #!/bin/bash
-#SBATCH --mem 2000
+#SBATCH --gres=gpu:1
+#SBATCH --mem 4000
 #SBATCH -c 2
 #SBATCH -t 800
 #SBATCH -o out_batch
@@ -29,8 +30,8 @@ while true ; do
         		shift ; MAX_EPOCHS=$1 ; shift ;;
         --x_loss)
         		shift ; X_LOSS=$1 ; shift ;;
-		--y_loss)
-				shift ; Y_LOSS=$1 ; shift ;;
+        --y_loss)
+                shift ; qY_LOSS=$1 ; shift ;;
         "") break;;
     esac
 done
