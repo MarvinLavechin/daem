@@ -59,6 +59,7 @@ eval $TRAIN_COMMAND
 OUTPUT_DIR_RESULTS=temp/Example_Transfer_RawRaw/test/test_me"$MAX_EPOCHS"_ndb"$N_DENSE_BLOCKS"_ndl"$N_DENSE_LAYERS" #can't be setted
 TEST_COMMAND="python imagetranslation/translate.py --mode test \
 --checkpoint $OUTPUT_DIR \
+--no_targets True
 --model CycleGAN \
 --input_dir $INPUT_DIR/val \
 --output_dir $OUTPUT_DIR_RESULTS \
