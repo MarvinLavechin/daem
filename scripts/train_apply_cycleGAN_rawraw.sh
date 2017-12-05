@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --mem 2000
 #SBATCH -c 2
-#SBATCH -t 4320
+#SBATCH -t 800
 #SBATCH -o out_batch
 #SBATCH -e err_batch
 
