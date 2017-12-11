@@ -68,6 +68,7 @@ TRAIN_COMMAND="python imagetranslation/translate.py --mode train \
 --display_freq $DISPLAY_FREQ"
 
 if [ ! -d "$OUTPUT_DIR" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
+    echo "Train CycleGAN\n"
     eval $TRAIN_COMMAND
 fi
 
@@ -84,6 +85,7 @@ TEST_COMMAND="python imagetranslation/translate.py --mode test \
 --image_width 512"
 
 if [ ! -d "$OUTPUT_DIR_RESULTS" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
+    echo "Test CycleGAN\n"
     eval $TEST_COMMAND
 fi
 
@@ -119,6 +121,7 @@ SEGMENTATION_TRAIN_COMMAND="python imagetranslation/translate.py   --mode train 
   --max_epochs 2000  --display_freq 50"
 
 if [ ! -d "$OUTPUT_SEGMENTATION_TRAIN" ]; then #even in random seed mode, we don't one to retrain the segmentation algorithm
+    echo "Train Segmentation"
     eval $SEGMENTATION_TRAIN_COMMAND
 fi
 
@@ -131,6 +134,7 @@ APPLY_SEGMENTATION_ON_TRANSLATED="python imagetranslation/translate.py   --mode 
   --image_height 512  --image_width 512 --model pix2pix"
 
 if [ ! -d "$OUTPUT_SEGMENTATION_TRANSLATED" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
+    echo "Test Segmentation"
     eval $APPLY_SEGMENTATION_ON_TRANSLATED
 fi
 
