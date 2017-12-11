@@ -24,25 +24,27 @@ RANDOM_SEED_MODE=false
 while true ; do
     case "$1" in
         --n_dense_layers) 
-        		shift ; N_DENSE_LAYERS=$1 ; shift ; break;;
+        		shift ; N_DENSE_LAYERS=$1 ; shift ;;
         --n_dense_blocks) 
-        		shift ; N_DENSE_BLOCKS=$1 ; shift ; break;;
+        		shift ; N_DENSE_BLOCKS=$1 ; shift ;;
         --max_epochs) 
-        		shift ; MAX_EPOCHS=$1 ; shift ; break;;
+        		shift ; MAX_EPOCHS=$1 ; shift ;;
         --x_loss)
-        		shift ; X_LOSS=$1 ; shift ; break;;
+        		shift ; X_LOSS=$1 ; shift ;;
         --y_loss)
-                shift ; Y_LOSS=$1 ; shift ; break;;
+                shift ; Y_LOSS=$1 ; shift ;;
         --random_seed_mode)
-                shift ; RANDOM_SEED_MODE=true break;;
-        *) echo "Unrecognized arguments" ; break;;
+                shift ; RANDOM_SEED_MODE=true ;;
+        *) break;;
     esac
 done
 
+echo $N_DENSE_LAYERS
+echo $RANDOM_SEED_MODE
 if [ "$RANDOM_SEED_MODE" = "true" ]; then
     DATE=`date '+%Y_%m_%d_%H_%M_%S'`
     SUFFIX_NAME=_me"$MAX_EPOCHS"_ndb"$N_DENSE_BLOCKS"_ndl"$N_DENSE_LAYERS"_xloss"$X_LOSS"_yloss"$Y_LOSS"_"$DATE" #can't be setted
-else
+elsei
     SUFFIX_NAME=_me"$MAX_EPOCHS"_ndb"$N_DENSE_BLOCKS"_ndl"$N_DENSE_LAYERS"_xloss"$X_LOSS"_yloss"$Y_LOSS" #can't be setted
 fi
 
