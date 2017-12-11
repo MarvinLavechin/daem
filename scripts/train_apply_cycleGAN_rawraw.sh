@@ -39,12 +39,10 @@ while true ; do
     esac
 done
 
-echo $N_DENSE_LAYERS
-echo $RANDOM_SEED_MODE
 if [ "$RANDOM_SEED_MODE" = "true" ]; then
     DATE=`date '+%Y_%m_%d_%H_%M_%S'`
     SUFFIX_NAME=_me"$MAX_EPOCHS"_ndb"$N_DENSE_BLOCKS"_ndl"$N_DENSE_LAYERS"_xloss"$X_LOSS"_yloss"$Y_LOSS"_"$DATE" #can't be setted
-elsei
+else
     SUFFIX_NAME=_me"$MAX_EPOCHS"_ndb"$N_DENSE_BLOCKS"_ndl"$N_DENSE_LAYERS"_xloss"$X_LOSS"_yloss"$Y_LOSS" #can't be setted
 fi
 
