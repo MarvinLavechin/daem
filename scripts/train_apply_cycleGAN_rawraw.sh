@@ -39,7 +39,7 @@ while true ; do
     esac
 done
 
-if [ $RANDOM_SEED_MODE = "true" ]; then
+if [ "$RANDOM_SEED_MODE" = "true" ]; then
     DATE=`date '+%Y_%m_%d_%H_%M_%S'`
     SUFFIX_NAME=_me"$MAX_EPOCHS"_ndb"$N_DENSE_BLOCKS"_ndl"$N_DENSE_LAYERS"_xloss"$X_LOSS"_yloss"$Y_LOSS"_"$DATE" #can't be setted
 else
@@ -67,7 +67,7 @@ TRAIN_COMMAND="python imagetranslation/translate.py --mode train \
 --n_dense_blocks $N_DENSE_BLOCKS \
 --display_freq $DISPLAY_FREQ"
 
-if [ ! -d "$OUTPUT_DIR" ] || [ $RANDOM_SEED_MODE = "true" ]; then
+if [ ! -d "$OUTPUT_DIR" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
     eval $TRAIN_COMMAND
 fi
 
@@ -83,7 +83,7 @@ TEST_COMMAND="python imagetranslation/translate.py --mode test \
 --image_height 512 \
 --image_width 512"
 
-if [ ! -d "$OUTPUT_DIR_RESULTS" ] || [ $RANDOM_SEED_MODE = "true" ]; then
+if [ ! -d "$OUTPUT_DIR_RESULTS" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
     eval $TEST_COMMAND
 fi
 
@@ -130,7 +130,7 @@ APPLY_SEGMENTATION_ON_TRANSLATED="python imagetranslation/translate.py   --mode 
   --output_dir $OUTPUT_SEGMENTATION_TRANSLATED \
   --image_height 512  --image_width 512 --model pix2pix"
 
-if [ ! -d "$OUTPUT_SEGMENTATION_TRANSLATED" ] || [ $RANDOM_SEED_MODE = "true" ]; then
+if [ ! -d "$OUTPUT_SEGMENTATION_TRANSLATED" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
     eval $APPLY_SEGMENTATION_ON_TRANSLATED
 fi
 
