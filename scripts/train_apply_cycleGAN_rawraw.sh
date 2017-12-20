@@ -188,6 +188,7 @@ EVAL2="python tools/evaluate.py --predicted \"temp/Example_Transfer_RawRaw/test_
 SCORE_SYNAPSE=$(eval $EVAL0)
 SCORE_SYNAPSE=${SCORE_SYNAPSE/*".png"/} #we clean variables from superfluous text
 SCORE_SYNAPSE=${SCORE_SYNAPSE/"Saved to"*/}
+
 SCORE_MITOCHONDRIA=$(eval $EVAL1)
 SCORE_MITOCHONDRIA=${SCORE_MITOCHONDRIA/*".png"/}
 SCORE_MITOCHONDRIA=${SCORE_MITOCHONDRIA/"Saved to"*/}
@@ -205,3 +206,15 @@ echo "<br/>" >> $HTML_FILE
 echo "<p>Results on synapse :</p>" >> $HTML_FILE
 echo "<p>$SCORE_SYNAPSE</p>" >> $HTML_FILE
 echo "</body></html>" >> $HTML_FILE
+
+#Finally, we rename the html_file to index it according to the average of the scored obtained on membrane and mitochondrias
+error_membrane="$(echo $SCORE_MEMBRANE | sed 's/.*adapted_RAND_error = //')"
+error_mitochondria="$(echo $SCORE_MITOCHONDRIA | sed 's/.*adapted_RAND_error = //')"
+average=$(echo "scale = 3;($error_membrane+$error_mitochondria)/2.0" | bc -l | sed -r 's/^(-?)\./\10./')
+NEW_HTML_FILE=temp/Example_Transfer_RawRaw/"$average"summary"$SUFFIX_NAME".html
+mv $HTML_FILE $NEW_HTML_FILE
+
+#We save it as a pdf file.
+wkhtmltopdf -O landscape $NEW_HTML_FILE ~/Documents/"$average"summary"$SUFFIX_NAME".pdf
+
+
