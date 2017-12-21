@@ -172,6 +172,7 @@ echo "<p>x_loss : $X_LOSS</p>" >> $HTML_FILE
 echo "<p>y_loss : $Y_LOSS</p>" >> $HTML_FILE
 
 ## Evaluation results
+echo "<br/>" >> $HTML_FILE
 echo "<p>Evaluation results ...</p>" >> $HTML_FILE
 
 ## Run evaluations for each channel (red = synapse, green = mitochondria, blue = membrane)
@@ -205,6 +206,15 @@ echo "<p>$SCORE_MITOCHONDRIA</p>" >> $HTML_FILE
 echo "<br/>" >> $HTML_FILE
 echo "<p>Results on synapse :</p>" >> $HTML_FILE
 echo "<p>$SCORE_SYNAPSE</p>" >> $HTML_FILE
+echo "<br/>" >> $HTML_FILE
+
+EVAL_TRANSLATION="python tools/compare.py --inputA temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49-inputs.png \
+--inputB temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49_translated-inputs.png"
+
+PSNR=$(eval $EVAL_TRANSLATION)
+PSNR=${PSNR/PSNR = /}
+echo "<p>PSNR input / translated :</p>" >> $HTML_FILE
+echo "<p>$PSNR</p>" >> $HTML_FILE
 echo "</body></html>" >> $HTML_FILE
 
 #Finally, we rename the html_file to index it according to the average of the scored obtained on membrane and mitochondrias
