@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --gres=gpu:1
-#SBATCH --mem 2000
+#SBATCH --mem 3500
 #SBATCH -c 2
 #SBATCH -t 800
 #SBATCH -o out_batch
@@ -172,7 +172,6 @@ echo "<p>x_loss : $X_LOSS</p>" >> $HTML_FILE
 echo "<p>y_loss : $Y_LOSS</p>" >> $HTML_FILE
 
 ## Evaluation results
-echo "<br/>" >> $HTML_FILE
 echo "<p>Evaluation results ...</p>" >> $HTML_FILE
 
 ## Run evaluations for each channel (red = synapse, green = mitochondria, blue = membrane)
