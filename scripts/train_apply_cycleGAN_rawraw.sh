@@ -2,7 +2,7 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem 3500
 #SBATCH -c 2
-#SBATCH -t 800
+#SBATCH -t 119
 #SBATCH -o out_batch
 #SBATCH -e err_batch
 
@@ -20,6 +20,11 @@ MAX_EPOCHS=2000
 X_LOSS=hinge
 Y_LOSS=hinge
 RANDOM_SEED_MODE=false
+HIGHLIGHT_NDL=false
+HIGHLIGHT_NDB=false
+HIGHLIGHT_MAX_EPOCHS=false
+HIGHLIGHT_X_LOSS=false
+HIGHLIGHT_Y_LOSS=false
 
 while true ; do
     case "$1" in
@@ -35,6 +40,16 @@ while true ; do
                 shift ; Y_LOSS=$1 ; shift ;;
         --random_seed_mode)
                 shift ; RANDOM_SEED_MODE=true ;;
+        --highlight_ndl)
+                shift ; HIGHLIGHT_NDL=true ;;
+        --highlight_ndb)
+                shift ; HIGHLIGHT_NDB=true ;;
+        --highlight_max_epochs)
+                shift ; HIGHLIGHT_MAX_EPOCHS=true ;;
+        --highlight_x_loss)
+                shift ; HIGHLIGHT_X_LOSS=true ;;
+        --highlight_y_loss)
+                shift ; HIGHLIGHT_Y_LOSS=true ;;
         *) break;;
     esac
 done
@@ -165,11 +180,41 @@ echo "<p>Value of the seed during the testing phase (CycleGAN) : $VALUE_SEED_CYC
 
 ## Hyper-parameters value
 echo "<p>Here some hyper-parameters ...</p>" >> $HTML_FILE
-echo "<p>max_epochs : $MAX_EPOCHS</p>" >> $HTML_FILE
-echo "<p>n_dense_layers : $N_DENSE_LAYERS</p>" >> $HTML_FILE
-echo "<p>n_dense_blocks : $N_DENSE_BLOCKS</p>" >> $HTML_FILE
-echo "<p>x_loss : $X_LOSS</p>" >> $HTML_FILE
-echo "<p>y_loss : $Y_LOSS</p>" >> $HTML_FILE
+if [ "$HIGHLIGHT_MAX_EPOCHS" = "true" ]
+then
+    echo "<p><span style="background:#B5E655">max_epochs : $MAX_EPOCHS</span></p>" >> $HTML_FILE
+else
+    echo "<p>max_epochs : $MAX_EPOCHS</p>" >> $HTML_FILE
+fi
+
+if [ "$HIGHLIGHT_NDL" = "true" ]
+then
+    echo "<p><span style="background:#B5E655">n_dense_layers : $N_DENSE_LAYERS</span></p>" >> $HTML_FILE
+else
+    echo "<p>n_dense_layers : $N_DENSE_LAYERS</p>" >> $HTML_FILE
+fi
+
+if [ "$HIGHLIGHT_NDB" = "true" ]
+then
+    echo "<p><span style="background:#B5E655">n_dense_blocks : $N_DENSE_BLOCKS</span></p>" >> $HTML_FILE
+else
+    echo "<p>n_dense_blocks : $N_DENSE_BLOCKS</p>" >> $HTML_FILE
+fi
+
+if [ "$HIGHLIGHT_X_LOSS" = "true" ]
+then
+    echo "<p><span style="background:#B5E655">x_loss : $X_LOSS</span></p>" >> $HTML_FILE
+else
+    echo "<p>x_loss : $X_LOSS</p>" >> $HTML_FILE
+fi
+
+if [ "$HIGHLIGHT_Y_LOSS" = "true" ]
+then
+    echo "<p><span style="background:#B5E655">y_loss : $Y_LOSS</span></p>" >> $HTML_FILE
+else
+    echo "<p>y_loss : $Y_LOSS</p>" >> $HTML_FILE
+fi
+
 
 ## Evaluation results
 echo "<p>Evaluation results ...</p>" >> $HTML_FILE
