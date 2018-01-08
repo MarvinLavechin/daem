@@ -11,54 +11,86 @@
 ##Can't set these settings
 INPUT_DIR=datasets/cortex/stack1/raw/lower_resolution
 INPUT_DIR_B=datasets/vnc/stack1/raw/lower_resolution
-DISPLAY_FREQ=50
 
 ##Can set these settings
+GENERATOR=unet
+
 N_DENSE_LAYERS=5
 N_DENSE_BLOCKS=5
+
+U_DEPTH=8
+
+N_RES_BLOCKS=9
+
+N_HIGHWAY_UNITS=9
+
+NGF=32
+
 MAX_EPOCHS=2000
 X_LOSS=hinge
 Y_LOSS=hinge
+
 RANDOM_SEED_MODE=false
-HIGHLIGHT_NDL=false
-HIGHLIGHT_NDB=false
-HIGHLIGHT_MAX_EPOCHS=false
-HIGHLIGHT_X_LOSS=false
-HIGHLIGHT_Y_LOSS=false
+
 
 while true ; do
     case "$1" in
-        --n_dense_layers) 
+        --generator)                                # unet, resnet, highwaynet or densenet
+        		shift ; GENERATOR=$1 ; shift ;;
+        #Dense net parameters
+        --n_dense_layers)
         		shift ; N_DENSE_LAYERS=$1 ; shift ;;
         --n_dense_blocks) 
         		shift ; N_DENSE_BLOCKS=$1 ; shift ;;
+
+        #U net parameter
+        --u_depth)
+        		shift ; U_DEPTH=$1 ; shift ;;
+
+        #Resnet parameter
+        --n_res_blocks)
+        		shift ; N_RES_BLOCKS=$1 ; shift ;;
+
+        #Highway net parameter
+        --n_highway_units)
+        		shift ; N_HIGHWAY_UNITS=$1 ; shift ;;
+
+        #Other parameters of discriminators and generators
         --max_epochs) 
         		shift ; MAX_EPOCHS=$1 ; shift ;;
         --x_loss)
         		shift ; X_LOSS=$1 ; shift ;;
         --y_loss)
                 shift ; Y_LOSS=$1 ; shift ;;
+        --ngf)
+        		shift ; NGF=$1 ; shift ;;
+        #Script mode
         --random_seed_mode)
                 shift ; RANDOM_SEED_MODE=true ;;
-        --highlight_ndl)
-                shift ; HIGHLIGHT_NDL=true ;;
-        --highlight_ndb)
-                shift ; HIGHLIGHT_NDB=true ;;
-        --highlight_max_epochs)
-                shift ; HIGHLIGHT_MAX_EPOCHS=true ;;
-        --highlight_x_loss)
-                shift ; HIGHLIGHT_X_LOSS=true ;;
-        --highlight_y_loss)
-                shift ; HIGHLIGHT_Y_LOSS=true ;;
         *) break;;
     esac
 done
 
+PARAM_GENERATOR=("--generator" "$GENERATOR")
+if [ "$GENERATOR" = "unet" ]; then
+    NGF=64
+    PARAM_GENERATOR+=("--u_depth" "$U_DEPTH")
+elif [ "$GENERATOR" = densenet ]; then
+    PARAM_GENERATOR+=("--n_dense_layers" "$N_DENSE_LAYERS" "--n_dense_blocks" "$N_DENSE_BLOCKS")
+elif [ "$GENERATOR" = highwaynet ]; then
+    PARAM_GENERATOR+=("--n_highway_units" "$N_HIGHWAY_UNITS")
+elif [ "$GENERATOR" = resnet ]; then
+    PARAM_GENERATOR+=("--n_res_blocks" "$N_RES_BLOCKS")
+fi
+PARAM_GENERATOR+=("--ngf" "$NGF")
+
+PARAM=("--max_epochs" "$MAX_EPOCHS" "--X_loss" "$X_LOSS" "--Y_loss" "$Y_LOSS")
+PARAM=("${PARAM_GENERATOR[@]}" "${PARAM[@]}")
+
+SUFFIX_NAME=$(echo ${PARAM[@]} | sed -e 's/ /_/g' | sed -e 's/--//g')
 if [ "$RANDOM_SEED_MODE" = "true" ]; then
     DATE=`date '+%Y_%m_%d_%H_%M_%S'`
-    SUFFIX_NAME=_me"$MAX_EPOCHS"_ndb"$N_DENSE_BLOCKS"_ndl"$N_DENSE_LAYERS"_xloss"$X_LOSS"_yloss"$Y_LOSS"_"$DATE" #can't be setted
-else
-    SUFFIX_NAME=_me"$MAX_EPOCHS"_ndb"$N_DENSE_BLOCKS"_ndl"$N_DENSE_LAYERS"_xloss"$X_LOSS"_yloss"$Y_LOSS" #can't be setted
+    SUFFIX_NAME="$SUFFIX_NAME"_"$DATE" #can't be setted
 fi
 
 OUTPUT_DIR=temp/Example_Transfer_RawRaw/train/train"$SUFFIX_NAME"
@@ -66,24 +98,21 @@ OUTPUT_DIR=temp/Example_Transfer_RawRaw/train/train"$SUFFIX_NAME"
 cd ..
 source activate daem
 
-## Train the CycleGAN model on the input_dir/train (training set)
+### Train the CycleGAN model on the input_dir/train (training set)
 TRAIN_COMMAND="python imagetranslation/translate.py --mode train \
 --input_dir $INPUT_DIR/train \
 --input_dir_B $INPUT_DIR_B \
 --output_dir $OUTPUT_DIR \
 --which_direction AtoB \
 --discriminator unpaired \
---X_loss $X_LOSS \
---Y_loss $Y_LOSS \
---model CycleGAN --generator resnet \
+--model CycleGAN \
 --fliplr --flipud --transpose \
---max_epochs $MAX_EPOCHS \
---n_dense_layers $N_DENSE_LAYERS \
---n_dense_blocks $N_DENSE_BLOCKS \
---display_freq $DISPLAY_FREQ"
+--display_freq 50 \
+${PARAM[@]}"
+
 
 if [ ! -d "$OUTPUT_DIR" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
-    echo "Train CycleGAN\n"
+    echo "Train CycleGAN :\n"
     eval $TRAIN_COMMAND
 fi
 
@@ -180,41 +209,10 @@ echo "<p>Value of the seed during the testing phase (CycleGAN) : $VALUE_SEED_CYC
 
 ## Hyper-parameters value
 echo "<p>Here some hyper-parameters ...</p>" >> $HTML_FILE
-if [ "$HIGHLIGHT_MAX_EPOCHS" = "true" ]
-then
-    echo "<p><span style="background:#B5E655">max_epochs : $MAX_EPOCHS</span></p>" >> $HTML_FILE
-else
-    echo "<p>max_epochs : $MAX_EPOCHS</p>" >> $HTML_FILE
-fi
 
-if [ "$HIGHLIGHT_NDL" = "true" ]
-then
-    echo "<p><span style="background:#B5E655">n_dense_layers : $N_DENSE_LAYERS</span></p>" >> $HTML_FILE
-else
-    echo "<p>n_dense_layers : $N_DENSE_LAYERS</p>" >> $HTML_FILE
-fi
-
-if [ "$HIGHLIGHT_NDB" = "true" ]
-then
-    echo "<p><span style="background:#B5E655">n_dense_blocks : $N_DENSE_BLOCKS</span></p>" >> $HTML_FILE
-else
-    echo "<p>n_dense_blocks : $N_DENSE_BLOCKS</p>" >> $HTML_FILE
-fi
-
-if [ "$HIGHLIGHT_X_LOSS" = "true" ]
-then
-    echo "<p><span style="background:#B5E655">x_loss : $X_LOSS</span></p>" >> $HTML_FILE
-else
-    echo "<p>x_loss : $X_LOSS</p>" >> $HTML_FILE
-fi
-
-if [ "$HIGHLIGHT_Y_LOSS" = "true" ]
-then
-    echo "<p><span style="background:#B5E655">y_loss : $Y_LOSS</span></p>" >> $HTML_FILE
-else
-    echo "<p>y_loss : $Y_LOSS</p>" >> $HTML_FILE
-fi
-
+for (( i=0; i<${#PARAM[@]} ; i+=2 )) ; do
+    echo "<p>${PARAM[i]/--/}" : "${PARAM[i+1]}</p>"  >> $HTML_FILE
+done
 
 ## Evaluation results
 echo "<p>Evaluation results ...</p>" >> $HTML_FILE
