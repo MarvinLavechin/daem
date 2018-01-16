@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --gres=gpu:1
-#SBATCH --mem 3500
+#SBATCH --mem 6000
 #SBATCH -c 2
-#SBATCH -t 119
+#SBATCH -t 450 
 #SBATCH -o out_batch
 #SBATCH -e err_batch
 
@@ -205,7 +205,6 @@ echo "</tr> </table></div>" >> $HTML_FILE
 VALUE_SEED_CYCLE_GAN_TRAIN=$(grep -oP '"seed":.*?[^\\],' temp/Example_Transfer_RawRaw/train/$NAME_TRAIN/options.json | cut -d" " -f2 | sed 's/.$//')
 VALUE_SEED_CYCLE_GAN_TEST=$(grep -oP '"seed":.*?[^\\],' temp/Example_Transfer_RawRaw/test_da/$NAME_TEST/options.json | cut -d" " -f2 | sed 's/.$//')
 echo "<p>Value of the seed during the training phase (CycleGAN) : $VALUE_SEED_CYCLE_GAN_TRAIN</p>" >> $HTML_FILE
-echo "<p>Value of the seed during the testing phase (CycleGAN) : $VALUE_SEED_CYCLE_GAN_TEST</p>" >> $HTML_FILE
 
 ## Hyper-parameters value
 echo "<p>Here some hyper-parameters ...</p>" >> $HTML_FILE
