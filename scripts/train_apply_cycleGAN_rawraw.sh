@@ -205,7 +205,6 @@ echo "</tr> </table></div>" >> $HTML_FILE
 VALUE_SEED_CYCLE_GAN_TRAIN=$(grep -oP '"seed":.*?[^\\],' temp/Example_Transfer_RawRaw/train/$NAME_TRAIN/options.json | cut -d" " -f2 | sed 's/.$//')
 VALUE_SEED_CYCLE_GAN_TEST=$(grep -oP '"seed":.*?[^\\],' temp/Example_Transfer_RawRaw/test_da/$NAME_TEST/options.json | cut -d" " -f2 | sed 's/.$//')
 echo "<p>Value of the seed during the training phase (CycleGAN) : $VALUE_SEED_CYCLE_GAN_TRAIN</p>" >> $HTML_FILE
-echo "<p>Value of the seed during the testing phase (CycleGAN) : $VALUE_SEED_CYCLE_GAN_TEST</p>" >> $HTML_FILE
 
 ## Hyper-parameters value
 echo "<p>Here some hyper-parameters ...</p>" >> $HTML_FILE
@@ -239,24 +238,20 @@ SCORE_MEMBRANE=$(eval $EVAL2)
 SCORE_MEMBRANE=${SCORE_MEMBRANE/*".png"/}
 SCORE_MEMBRANE=${SCORE_MEMBRANE/"Saved to"*/}
 
-echo "<br/>" >> $HTML_FILE
-echo "<p>Results on membrane :</p>" >> $HTML_FILE
-echo "<p>$SCORE_MEMBRANE</p>" >> $HTML_FILE
-echo "<br/>" >> $HTML_FILE
-echo "<p>Results on mitochondria :</p>" >> $HTML_FILE
-echo "<p>$SCORE_MITOCHONDRIA</p>" >> $HTML_FILE
-echo "<br/>" >> $HTML_FILE
-echo "<p>Results on synapse :</p>" >> $HTML_FILE
-echo "<p>$SCORE_SYNAPSE</p>" >> $HTML_FILE
-echo "<br/>" >> $HTML_FILE
+echo "<p>Results on membrane : " >> $HTML_FILE
+echo "$SCORE_MEMBRANE</p>" >> $HTML_FILE
+echo "<p>Results on mitochondria : " >> $HTML_FILE
+echo "$SCORE_MITOCHONDRIA</p>" >> $HTML_FILE
+echo "<p>Results on synapse : " >> $HTML_FILE
+echo "$SCORE_SYNAPSE</p>" >> $HTML_FILE
 
 EVAL_TRANSLATION="python tools/compare.py --inputA temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49-inputs.png \
 --inputB temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49_translated-inputs.png"
 
 PSNR=$(eval $EVAL_TRANSLATION)
 PSNR=${PSNR/PSNR = /}
-echo "<p>PSNR input / translated :</p>" >> $HTML_FILE
-echo "<p>$PSNR</p>" >> $HTML_FILE
+echo "<p>PSNR input / translated : " >> $HTML_FILE
+echo "$PSNR </p>" >> $HTML_FILE
 echo "</body></html>" >> $HTML_FILE
 
 #Finally, we rename the html_file to index it according to the average of the scored obtained on membrane and mitochondrias
