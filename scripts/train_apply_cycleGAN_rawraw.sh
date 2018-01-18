@@ -13,25 +13,8 @@ INPUT_DIR=datasets/cortex/stack1/raw/lower_resolution
 INPUT_DIR_B=datasets/vnc/stack1/raw/lower_resolution
 
 ##Can set these settings
-GENERATOR=unet
-
-N_DENSE_LAYERS=5
-N_DENSE_BLOCKS=5
-
-U_DEPTH=8
-
-N_RES_BLOCKS=9
-
-N_HIGHWAY_UNITS=9
-
-NGF=32
-
-MAX_EPOCHS=2000
-X_LOSS=hinge
-Y_LOSS=hinge
-
 RANDOM_SEED_MODE=false
-
+RANDOM_INIT_MODE=false
 
 while true ; do
     case "$1" in
@@ -67,25 +50,28 @@ while true ; do
         #Script mode
         --random_seed_mode)
                 shift ; RANDOM_SEED_MODE=true ;;
+        --random_init_mode)
+                shift ; RANDOM_INIT_MODE=true ;;
         *) break;;
     esac
 done
 
-PARAM_GENERATOR=("--generator" "$GENERATOR")
-if [ "$GENERATOR" = "unet" ]; then
-    NGF=64
-    PARAM_GENERATOR+=("--u_depth" "$U_DEPTH")
-elif [ "$GENERATOR" = densenet ]; then
-    PARAM_GENERATOR+=("--n_dense_layers" "$N_DENSE_LAYERS" "--n_dense_blocks" "$N_DENSE_BLOCKS")
-elif [ "$GENERATOR" = highwaynet ]; then
-    PARAM_GENERATOR+=("--n_highway_units" "$N_HIGHWAY_UNITS")
-elif [ "$GENERATOR" = resnet ]; then
-    PARAM_GENERATOR+=("--n_res_blocks" "$N_RES_BLOCKS")
-fi
-PARAM_GENERATOR+=("--ngf" "$NGF")
+PARAM=()
+if [ "$GENERATOR" != "" ]; then PARAM+=("--generator" "$GENERATOR") ;fi
+if [ "$N_DENSE_LAYERS" != "" ]; then PARAM+=("--n_dense_layers" "$N_DENSE_LAYERS") ;fi
+if [ "$N_DENSE_BLOCKS" != "" ]; then PARAM+=("--n_dense_blocks" "$N_DENSE_BLOCKS") ;fi
+if [ "$U_DEPTH" != "" ]; then PARAM+=("--u_depth" "$U_DEPTH") ;fi
+if [ "$N_RES_BLOCKS" != "" ]; then PARAM+=("--n_res_blocks" "$N_RES_BLOCKS") ;fi
+if [ "$N_HIGHWAY_UNITS" != "" ]; then PARAM+=("--n_highway_units" "$N_HIGHWAY_UNITS") ;fi
+if [ "$MAX_EPOCHS" != "" ]; then PARAM+=("--max_epochs" "$MAX_EPOCHS") ;fi
+if [ "$X_LOSS" != "" ]; then PARAM+=("--X_loss" "$X_LOSS") ;fi
+if [ "$Y_LOSS" != "" ]; then PARAM+=("--Y_loss" "$Y_LOSS") ;fi
+if [ "$NGF" != "" ]; then PARAM+=("--ngf" "$NGF") ;fi
 
-PARAM=("--max_epochs" "$MAX_EPOCHS" "--X_loss" "$X_LOSS" "--Y_loss" "$Y_LOSS")
-PARAM=("${PARAM_GENERATOR[@]}" "${PARAM[@]}")
+if [ "$RANDOM_INIT_MODE" = "true" ]; then
+    RANDOM_SEED_MODE=true
+    PARAM+=("--random_init")
+fi
 
 SUFFIX_NAME=$(echo ${PARAM[@]} | sed -e 's/ /_/g' | sed -e 's/--//g')
 if [ "$RANDOM_SEED_MODE" = "true" ]; then
@@ -107,9 +93,7 @@ TRAIN_COMMAND="python imagetranslation/translate.py --mode train \
 --discriminator unpaired \
 --model CycleGAN \
 --fliplr --flipud --transpose \
---display_freq 50 \
 ${PARAM[@]}"
-
 
 if [ ! -d "$OUTPUT_DIR" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
     echo "Train CycleGAN :\n"
@@ -162,7 +146,7 @@ SEGMENTATION_TRAIN_COMMAND="python imagetranslation/translate.py   --mode train 
   --which_direction AtoB  --Y_loss square \
   --model pix2pix   --generator resnet \
   --fliplr   --flipud  --transpose \
-  --max_epochs 2000  --display_freq 50"
+  --max_epochs 2000"
 
 if [ ! -d "$OUTPUT_SEGMENTATION_TRAIN" ]; then #even in random seed mode, we don't one to retrain the segmentation algorithm
     echo "Train Segmentation"
@@ -207,11 +191,51 @@ VALUE_SEED_CYCLE_GAN_TEST=$(grep -oP '"seed":.*?[^\\],' temp/Example_Transfer_Ra
 echo "<p>Value of the seed during the training phase (CycleGAN) : $VALUE_SEED_CYCLE_GAN_TRAIN</p>" >> $HTML_FILE
 
 ## Hyper-parameters value
-echo "<p>Here some hyper-parameters ...</p>" >> $HTML_FILE
+PARAMETERS_FILE="$OUTPUT_DIR/options.json"
+LIST_HYPER_PARAMETERS="X_loss Y_loss beta1 classic_weight gan_weight gen_loss generator loss
+                       lr max_epochs max_steps n_dense_blocks n_dense_layers n_highway_units
+                       n_res_blocks ndf ngf u_depth"
 
-for (( i=0; i<${#PARAM[@]} ; i+=2 )) ; do
-    echo "<p>${PARAM[i]/--/}" : "${PARAM[i+1]}</p>"  >> $HTML_FILE
-done
+function contains {
+    local list="$1"
+    local item="$2"
+    if [[ $list =~ (^|[[:space:]])"$item"($|[[:space:]]) ]] ; then
+        # yes, list include item
+        result=1
+    else
+        result=0
+    fi
+    return $result
+}
+
+echo "<table BORDER="1">" >> $HTML_FILE
+echo "<caption>Here the hyper-parameters ...</caption>" >> $HTML_FILE
+i=1
+while read p; do
+    PARAMETER=$(echo $p | sed 's/\"\:.*$//' | sed 's/\"//' )
+    VALUE=$(echo $p | sed 's/.*\://' | sed 's/\"//g' | sed 's/\,//g' )
+
+    contains "${LIST_HYPER_PARAMETERS[@]}" $PARAMETER
+    IS_HYPER_PARAMETER=$?
+
+    if [ $IS_HYPER_PARAMETER = 1 ]; then
+
+        MODULUS=$(( $i  % 6 ))
+        if [ $MODULUS = 1 ]; then
+            echo "<tr>" >> $HTML_FILE
+        fi
+
+        echo "<td>$PARAMETER : $VALUE</td>" >> $HTML_FILE
+
+        if [ $MODULUS = 0 ]; then
+            echo "</tr>" >> $HTML_FILE
+        fi
+
+        i=$(($i+1))
+    fi
+done <$PARAMETERS_FILE
+
+echo "</table>" >> $HTML_FILE
 
 ## Evaluation results
 echo "<p>Evaluation results ...</p>" >> $HTML_FILE
