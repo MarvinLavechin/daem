@@ -285,7 +285,14 @@ average=$(echo "scale = 3;($error_membrane+$error_mitochondria)/2.0" | bc -l | s
 NEW_HTML_FILE=temp/Example_Transfer_RawRaw/"$average"summary"$SUFFIX_NAME".html
 mv $HTML_FILE $NEW_HTML_FILE
 
-#We save it as a pdf file.
-wkhtmltopdf -O landscape $NEW_HTML_FILE ~/Documents/"$average"summary"$SUFFIX_NAME".pdf
+#We save the html file, and its pdf version if everything has been executed correctly.
+if [ -f temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49-inputs.png ] && [ -f temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49_translated-inputs.png ]; then
+    wkhtmltopdf -O landscape $NEW_HTML_FILE ~/Documents/"$average"summary"$SUFFIX_NAME".pdf
+    mkdir -p ~/Documents_html
+    mv $NEW_HTML_FILE ~/Documents_html
+fi
 
+#We remove temporary files to avoid to run out of memory
+rm $OUTPUT_DIR
+rm $OUTPUT_SEGMENTATION_TRANSLATED
 
