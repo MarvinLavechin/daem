@@ -294,5 +294,6 @@ fi
 
 #We remove temporary files to avoid to run out of memory
 rm -rf $OUTPUT_DIR
+rm -rf $OUTPUT_DIR_RESULTS
 rm -rf $OUTPUT_SEGMENTATION_TRANSLATED
 
