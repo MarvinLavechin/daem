@@ -286,7 +286,7 @@ NEW_HTML_FILE=temp/Example_Transfer_RawRaw/"$average"summary"$SUFFIX_NAME".html
 mv $HTML_FILE $NEW_HTML_FILE
 
 #We save the html file, and its pdf version if everything has been executed correctly.
-if [ -f temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49-inputs.png ] && [ -f temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49_translated-inputs.png ]; then
+if [ -f temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49-inputs.png ] && [ -f temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49_translated-inputs.png ] && [ $SCORE_MEMBRANE != 0 ]; then
     wkhtmltopdf -O landscape $NEW_HTML_FILE ~/Documents/"$average"summary"$SUFFIX_NAME".pdf
     mkdir -p ~/Documents_html
     mv $NEW_HTML_FILE ~/Documents_html
