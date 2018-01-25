@@ -2,11 +2,9 @@
 
 NUMBER_OF_JOBS=$1
 
-for (( n=1; n<=8; n++))
+for (( c=1; c<=$NUMBER_OF_JOBS; c++ ))
 do
-	for (( c=1; c<=$NUMBER_OF_JOBS; c++ ))
-	do
-		sbatch -p gpucpuM train_apply_cycleGAN_rawraw.sh --generator unet --u_depth $n --max_epochs 1000 --random_seed_mode
-		sleep 1
-	done
+	sbatch -p gpucpuM train_apply_cycleGAN_rawraw.sh --random_init_mode
+	sleep 1
 done
+
