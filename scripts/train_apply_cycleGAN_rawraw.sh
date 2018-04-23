@@ -9,8 +9,14 @@
 #Default settings
 
 ##Can't set these settings
-INPUT_DIR=datasets/cortex/stack1/raw/lower_resolution
-INPUT_DIR_B=datasets/vnc/stack1/raw/lower_resolution
+
+#input_dir and input_dir_B for the cycleGAN without segmentation_loss
+#INPUT_DIR=datasets/cortex/stack1/raw/lower_resolution
+#INPUT_DIR_B=datasets/vnc/stack1/raw/lower_resolution
+
+#input_dir and input_dir_B for the cycleGAN with segmentation_loss
+INPUT_DIR=datasets/cortex/combined/lower_resolution
+INPUT_DIR_B=datasets/vnc/combined/lower_resolution
 
 ##Can set these settings
 RANDOM_SEED_MODE=false
@@ -18,6 +24,8 @@ RANDOM_INIT_MODE=false
 
 while true ; do
     case "$1" in
+        --seed)
+                shift ; SEED=$1 ; shift ;;
         --generator)                                # unet, resnet, highwaynet or densenet
         		shift ; GENERATOR=$1 ; shift ;;
         #Dense net parameters
@@ -47,11 +55,29 @@ while true ; do
                 shift ; Y_LOSS=$1 ; shift ;;
         --ngf)
         		shift ; NGF=$1 ; shift ;;
+        #Segmentation loss while training cycleGAN parameters
+        --checkpoint_segmentation)
+                shift ; CHECKPOINT_SEGMENTATION=$1 ; shift ;;
+        --weight_segmentation)
+                shift ; WEIGHT_SEGMENTATION=$1 ; shift ;;
         #Script mode
         --random_seed_mode)
                 shift ; RANDOM_SEED_MODE=true ;;
         --random_init_mode)
                 shift ; RANDOM_INIT_MODE=true ;;
+        #Transformations parameters
+        --no_flipud)
+            shift ; NO_FLIPUD=true ;;
+        --no_fliplr)
+            shift ; NO_FLIPLR=true ;;
+        --no_transpose)
+            shift ; NO_TRANSPOSE=true ;;
+        --flipud)
+            shift ; FLIPUD=true ;;
+        --fliplr)
+            shift ; FLIPLR=true ;;
+        --transpose)
+            shift ; TRANSPOSE=true ;;
         *) break;;
     esac
 done
@@ -67,13 +93,26 @@ if [ "$MAX_EPOCHS" != "" ]; then PARAM+=("--max_epochs" "$MAX_EPOCHS") ;fi
 if [ "$X_LOSS" != "" ]; then PARAM+=("--X_loss" "$X_LOSS") ;fi
 if [ "$Y_LOSS" != "" ]; then PARAM+=("--Y_loss" "$Y_LOSS") ;fi
 if [ "$NGF" != "" ]; then PARAM+=("--ngf" "$NGF") ;fi
+if [ "$CHECKPOINT_SEGMENTATION" != "" ]; then PARAM+=("--checkpoint_segmentation" "$CHECKPOINT_SEGMENTATION") ;fi
+if [ "$WEIGHT_SEGMENTATION" != "" ]; then PARAM+=("--weight_segmentation" "$WEIGHT_SEGMENTATION") ;fi
+if [ "$SEED" != "" ]; then PARAM+=("--seed" "$SEED") ;fi
+if [ "$FLIPUD" != "" ]; then PARAM+=("--flipud") ;fi
+if [ "$FLIPLR" != "" ]; then PARAM+=("--fliplr") ;fi
+if [ "$TRANSPOSE" != "" ]; then PARAM+=("--transpose") ;fi
+if [ "$NO_FLIPUD" != "" ]; then PARAM+=("--no_flipud") ;fi
+if [ "$NO_FLIPLR" != "" ]; then PARAM+=("--no_fliplr") ;fi
+if [ "$NO_TRANSPOSE" != "" ]; then PARAM+=("--no_transpose") ;fi
 
 if [ "$RANDOM_INIT_MODE" = "true" ]; then
     RANDOM_SEED_MODE=true
     PARAM+=("--random_init")
 fi
 
-SUFFIX_NAME=$(echo ${PARAM[@]} | sed -e 's/ /_/g' | sed -e 's/--//g')
+SUFFIX_NAME=$(echo ${PARAM[@]} | sed -e 's/--checkpoint_segmentation.*--w/--w/g' | sed -e 's/ /_/g' | sed -e 's/--//g')
+
+echo "Suffix name chosen for the file"
+echo $SUFFIX_NAME
+
 if [ "$RANDOM_SEED_MODE" = "true" ]; then
     DATE=`date '+%Y_%m_%d_%H_%M_%S'`
     SUFFIX_NAME="$SUFFIX_NAME"_"$DATE" #can't be setted
@@ -87,12 +126,13 @@ source activate daem
 ### Train the CycleGAN model on the input_dir/train (training set)
 TRAIN_COMMAND="python imagetranslation/translate.py --mode train \
 --input_dir $INPUT_DIR/train \
---input_dir_B $INPUT_DIR_B \
+--input_dir_B $INPUT_DIR_B/train \
 --output_dir $OUTPUT_DIR \
 --which_direction AtoB \
 --discriminator unpaired \
 --model CycleGAN \
 --fliplr --flipud --transpose \
+--display_freq 10 \
 ${PARAM[@]}"
 
 if [ ! -d "$OUTPUT_DIR" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
@@ -105,10 +145,10 @@ fi
 OUTPUT_DIR_RESULTS=temp/Example_Transfer_RawRaw/test_da/test"$SUFFIX_NAME"
 TEST_COMMAND="python imagetranslation/translate.py --mode test \
 --checkpoint $OUTPUT_DIR \
---output_type translation_no_targets \
 --model CycleGAN \
---input_dir $INPUT_DIR/val \
+--input_dir datasets/cortex/combined/lower_resolution/val \
 --output_dir $OUTPUT_DIR_RESULTS \
+--seed 0 \
 --image_height 512 \
 --image_width 512"
 
@@ -132,7 +172,7 @@ python imagetranslation/tools/process.py  \
 --input_dir examples/transfer1/paired_annotation/translated/ \
 --b_dir examples/transfer1/paired_annotation/labels/lower_resolution/ \
 --output_dir datasets/cortex/paired_annotation/;
-mv datasets/cortex/paired_annotation/49.png datasets/cortex/paired_annotation/combined/49_translated.png
+mv datasets/cortex/paired_annotation/49.png datasets/cortex/paired_annotation/49_translated.png
 "
 
 eval $COMBINE_COMMAND
@@ -141,10 +181,11 @@ eval $COMBINE_COMMAND
 OUTPUT_SEGMENTATION_TRAIN=temp/Example_2D_3Labels/train_lower_resolution
 
 SEGMENTATION_TRAIN_COMMAND="python imagetranslation/translate.py   --mode train \
-  --input_dir datasets/vnc/combined/train \
+  --input_dir datasets/vnc/combined/lower_resolution/train \
   --output_dir $OUTPUT_SEGMENTATION_TRAIN \
   --which_direction AtoB  --Y_loss square \
   --model pix2pix   --generator resnet \
+  --seed 0 \
   --fliplr   --flipud  --transpose \
   --max_epochs 2000"
 
@@ -153,13 +194,13 @@ if [ ! -d "$OUTPUT_SEGMENTATION_TRAIN" ]; then #even in random seed mode, we don
     eval $SEGMENTATION_TRAIN_COMMAND
 fi
 
-## Apply it on 49.png and 49_translated.png
+## Apply it on 49_translated.png
 OUTPUT_SEGMENTATION_TRANSLATED=temp/Example_Transfer_RawRaw/test_da_seg/test"$SUFFIX_NAME"
 APPLY_SEGMENTATION_ON_TRANSLATED="python imagetranslation/translate.py   --mode test \
   --checkpoint $OUTPUT_SEGMENTATION_TRAIN \
-  --input_dir datasets/cortex/paired_annotation/combined \
+  --input_dir datasets/cortex/paired_annotation/ \
   --output_dir $OUTPUT_SEGMENTATION_TRANSLATED \
-  --image_height 512  --image_width 512 --model pix2pix"
+  --image_height 512  --image_width 512 --model pix2pix --seed 0"
 
 if [ ! -d "$OUTPUT_SEGMENTATION_TRANSLATED" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
     echo "Test Segmentation"
@@ -269,7 +310,7 @@ echo "$SCORE_MITOCHONDRIA</p>" >> $HTML_FILE
 echo "<p>Results on synapse : " >> $HTML_FILE
 echo "$SCORE_SYNAPSE</p>" >> $HTML_FILE
 
-EVAL_TRANSLATION="python tools/compare.py --inputA temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49-inputs.png \
+EVAL_TRANSLATION="python tools/compare.py --inputA temp/Example_Transfer_RawRaw/test_da/$NAME_TEST/images/49-inputs.png \
 --inputB temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49_translated-inputs.png"
 
 PSNR=$(eval $EVAL_TRANSLATION)
@@ -293,7 +334,7 @@ if [ -f "temp/Example_Transfer_RawRaw/test_da_seg/$NAME_TEST/images/49-inputs.pn
 fi
 
 #We remove temporary files to avoid to run out of memory
-rm -rf $OUTPUT_DIR
-rm -rf $OUTPUT_DIR_RESULTS
-rm -rf $OUTPUT_SEGMENTATION_TRANSLATED
+#rm -rf $OUTPUT_DIR
+#rm -rf $OUTPUT_DIR_RESULTS
+#rm -rf $OUTPUT_SEGMENTATION_TRANSLATED
 
