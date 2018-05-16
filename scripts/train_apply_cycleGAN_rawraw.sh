@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --gres=gpu:1
-#SBATCH --mem 8000
+#SBATCH --mem 17000
 #SBATCH -c 2
 #SBATCH -t 600
 #SBATCH -o out_batch
@@ -11,12 +11,12 @@
 ##Can't set these settings
 
 #input_dir and input_dir_B for the cycleGAN without segmentation_loss
-#INPUT_DIR=datasets/cortex/stack1/raw/lower_resolution
-#INPUT_DIR_B=datasets/vnc/stack1/raw/lower_resolution
+INPUT_DIR=datasets/cortex/stack1/raw/lower_resolution
+INPUT_DIR_B=datasets/vnc/stack1/raw/lower_resolution
 
 #input_dir and input_dir_B for the cycleGAN with segmentation_loss
-INPUT_DIR=datasets/cortex/combined/lower_resolution
-INPUT_DIR_B=datasets/vnc/combined/lower_resolution
+#INPUT_DIR=datasets/cortex/combined/lower_resolution
+#INPUT_DIR_B=datasets/vnc/combined/lower_resolution
 
 ##Can set these settings
 RANDOM_SEED_MODE=false
@@ -132,7 +132,7 @@ TRAIN_COMMAND="python imagetranslation/translate.py --mode train \
 --discriminator unpaired \
 --model CycleGAN \
 --fliplr --flipud --transpose \
---display_freq 10 \
+--display_freq 100 \
 ${PARAM[@]}"
 
 if [ ! -d "$OUTPUT_DIR" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
