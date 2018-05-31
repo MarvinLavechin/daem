@@ -281,14 +281,14 @@ echo "<p>Evaluation results ...</p>" >> $HTML_FILE
 EVAL_PREDICTED_DIR=$OUTPUT_DIR/test_domain_adaptation_segmentation/$NAME_TEST/images/*_translated-outputs.png
 EVAL_TRUE_DIR=$OUTPUT_DIR/test_domain_adaptation_segmentation/$NAME_TEST/images/*_translated-targets.png
 EVAL_OUTPUT_DIR=$OUTPUT_DIR/test_domain_adaptation_segmentation
-EVAL0="python tools/evaluate.py --predicted $EVAL_PREDICTED_DIR \
---true $EVAL_TRUE_DIR \
+EVAL0="python tools/evaluate.py --predicted \"$EVAL_PREDICTED_DIR\" \
+--true \"$EVAL_TRUE_DIR\" \
 --output $EVAL_OUTPUT_DIR/evaluation-synapses.csv  --channel 0"
-EVAL1="python tools/evaluate.py --predicted $EVAL_PREDICTED_DIR \
---true $EVAL_TRUE_DIR \
+EVAL1="python tools/evaluate.py --predicted \"$EVAL_PREDICTED_DIR\" \
+--true \"$EVAL_TRUE_DIR\" \
 --output $EVAL_OUTPUT_DIR/evaluation-mitochondria.csv  --channel 1"
-EVAL2="python tools/evaluate.py --predicted $EVAL_PREDICTED_DIR \
---true $EVAL_TRUE_DIR \
+EVAL2="python tools/evaluate.py --predicted \"$EVAL_PREDICTED_DIR\" \
+--true \"$EVAL_TRUE_DIR\" \
 --output $EVAL_OUTPUT_DIR/evaluation-membranes.csv  --channel 2 --segment_by 1"
 
 SCORE_SYNAPSE=$(eval $EVAL0)
