@@ -22,7 +22,7 @@ TRAIN_COMMAND="python imagetranslation/translate.py  --mode train \
   --which_direction AtoB  --Y_loss square \
   --model pix2pix   --generator resnet \
   --fliplr   --flipud  --transpose \
-  --max_epochs $MAX_EPOCHS  --display_freq 100"
+  --max_epochs $MAX_EPOCHS  --display_freq 400"
 
 eval $TRAIN_COMMAND
 

@@ -134,7 +134,7 @@ TRAIN_COMMAND="python imagetranslation/translate.py --mode train \
 --discriminator unpaired \
 --model CycleGAN \
 --fliplr --flipud --transpose \
---display_freq 100 \
+--display_freq 400 \
 ${PARAM[@]}"
 
 if [ ! -d "$OUTPUT_TRAIN_CYCLE_GAN" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
