@@ -10,7 +10,7 @@ Work in progress.
 
 ## Learning the transfer function (from mouse raw images to drosophila raw images), then applying it.
 
-Here, we want to learn only on the training set. We provide two pairs of images to the model which can be described as follows :
+Here, we want to train our algorithm only on the training set. We provide two pairs of images to the model which can be described as follows :
 - A mouse raw/mouse label pair.
 - A drosophila raw/drosophila label pair.
 At each step of the training, we compute a segmentation loss between the mouse translated image and its groundtruth.

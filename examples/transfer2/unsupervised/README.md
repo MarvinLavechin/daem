@@ -10,7 +10,7 @@ Work in progress.
 
 ## Learning the transfer function (from mouse raw images to drosophila raw images), then applying it.
 
-Here, we want to use the all images that we have. 
+We want to use all of the images that we have. 
 
 ```bash
 python imagetranslation/translate.py --mode train \
