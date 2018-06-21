@@ -134,7 +134,7 @@ TRAIN_COMMAND="python imagetranslation/translate.py --mode train \
 --discriminator unpaired \
 --model CycleGAN \
 --fliplr --flipud --transpose \
---display_freq 400 \
+--display_freq 5000 \
 ${PARAM[@]}"
 
 if [ ! -d "$OUTPUT_TRAIN_CYCLE_GAN" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
@@ -283,13 +283,13 @@ EVAL_TRUE_DIR=$OUTPUT_DIR/test_domain_adaptation_segmentation/$NAME_TEST/images/
 EVAL_OUTPUT_DIR=$OUTPUT_DIR/test_domain_adaptation_segmentation
 EVAL0="python tools/evaluate.py --predicted \"$EVAL_PREDICTED_DIR\" \
 --true \"$EVAL_TRUE_DIR\" \
---output $EVAL_OUTPUT_DIR/evaluation-synapses.csv  --channel 0"
+--output $EVAL_OUTPUT_DIR/evaluation-synapses$SUFFIX_NAME.csv  --channel 0"
 EVAL1="python tools/evaluate.py --predicted \"$EVAL_PREDICTED_DIR\" \
 --true \"$EVAL_TRUE_DIR\" \
---output $EVAL_OUTPUT_DIR/evaluation-mitochondria.csv  --channel 1"
+--output $EVAL_OUTPUT_DIR/evaluation-mitochondria$SUFFIX_NAME.csv  --channel 1"
 EVAL2="python tools/evaluate.py --predicted \"$EVAL_PREDICTED_DIR\" \
 --true \"$EVAL_TRUE_DIR\" \
---output $EVAL_OUTPUT_DIR/evaluation-membranes.csv  --channel 2 --segment_by 1"
+--output $EVAL_OUTPUT_DIR/evaluation-membranes$SUFFIX_NAME.csv  --channel 2 --segment_by 1"
 
 SCORE_SYNAPSE=$(eval $EVAL0)
 SCORE_SYNAPSE=${SCORE_SYNAPSE/*".png"/} #we clean variables from superfluous text
