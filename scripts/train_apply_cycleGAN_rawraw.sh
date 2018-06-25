@@ -37,6 +37,8 @@ while true ; do
         #Other parameters of discriminators and generators
         --max_epochs)
         		shift ; MAX_EPOCHS=$1 ; shift ;;
+        --max_steps)
+        		shift ; MAX_STEPS=$1 ; shift ;;
         --x_loss)
         		shift ; X_LOSS=$1 ; shift ;;
         --y_loss)
@@ -78,6 +80,7 @@ if [ "$U_DEPTH" != "" ]; then PARAM+=("--u_depth" "$U_DEPTH") ;fi
 if [ "$N_RES_BLOCKS" != "" ]; then PARAM+=("--n_res_blocks" "$N_RES_BLOCKS") ;fi
 if [ "$N_HIGHWAY_UNITS" != "" ]; then PARAM+=("--n_highway_units" "$N_HIGHWAY_UNITS") ;fi
 if [ "$MAX_EPOCHS" != "" ]; then PARAM+=("--max_epochs" "$MAX_EPOCHS") ;fi
+if [ "$MAX_STEPS" != "" ]; then PARAM+=("--max_steps" "$MAX_STEPS") ;fi
 if [ "$X_LOSS" != "" ]; then PARAM+=("--X_loss" "$X_LOSS") ;fi
 if [ "$Y_LOSS" != "" ]; then PARAM+=("--Y_loss" "$Y_LOSS") ;fi
 if [ "$NGF" != "" ]; then PARAM+=("--ngf" "$NGF") ;fi
@@ -115,7 +118,7 @@ else
     # Unsupervised case
     # No need to have a training and validation set in this case.
     # Because impossible to evaluate "the accuracy" of the translation.
-    INPUT_DIR=datasets/cropped_cortex/stack1/raw
+    INPUT_DIR=datasets/cropped_cortex/stack1/raw/train
     INPUT_DIR_B=datasets/cropped_vnc/stack1/raw
     OUTPUT_DIR=temp/Example_Domain_Adaptation_Unsupervised
 fi
@@ -134,7 +137,7 @@ TRAIN_COMMAND="python imagetranslation/translate.py --mode train \
 --discriminator unpaired \
 --model CycleGAN \
 --fliplr --flipud --transpose \
---display_freq 5000 \
+--display_freq 500 \
 ${PARAM[@]}"
 
 if [ ! -d "$OUTPUT_TRAIN_CYCLE_GAN" ] || [ "$RANDOM_SEED_MODE" = "true" ]; then
