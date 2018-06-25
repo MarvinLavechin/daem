@@ -6,7 +6,7 @@
 #SBATCH -o out_batch
 #SBATCH -e err_batch
 
-MAX_EPOCHS=1000
+MAX_STEPS=5000
 DATE=`date '+%Y_%m_%d_%H_%M_%S'`
 
 cd ..
@@ -23,7 +23,7 @@ TRAIN_COMMAND="python imagetranslation/translate.py  --mode train \
   --which_direction AtoB  --Y_loss square \
   --model pix2pix   --generator unet \
   --fliplr   --flipud  --transpose \
-  --max_epochs $MAX_EPOCHS  --display_freq 400"
+  --max_steps $MAX_STEPS  --display_freq 400"
 
 eval $TRAIN_COMMAND
 
