@@ -4,7 +4,7 @@
 
 ### Prerequisites
 - Linux or OSX
-- Python 2 (full Python 3 will be available soon)
+- Python 2
 - CPU or NVIDIA GPU + CUDA CuDNN
 
 ### Requirements
