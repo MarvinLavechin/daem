@@ -20,7 +20,7 @@
 
 ## Getting Started
 
-- Create environment `heuhaufen` and install requirements, see [instructions](CONDA.md)
+- Create environment `daem` and install requirements, see [instructions](CONDA.md)
 - Clone this repository
 
 ```bash
@@ -30,13 +30,13 @@ git clone https://github.com/tbullmann/heuhaufen.git
 - Clone other repositories used for computation and visualization if not yet installed
 
 ```bash
-git clone https://github.com/tbullmann/imagetranslation-tensorflow.git
+git clone https://github.com/MarvinLavechin/daem.git
 ```
 
 - Symlink repositories
 
 ```bash
-cd heuhaufen
+cd daem
 ln -s ../imagetranslation-tensorflow/ imagetranslation
 ```
 
