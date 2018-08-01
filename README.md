@@ -20,7 +20,8 @@
 
 ## Getting Started
 
-- Create environment `daem` and install requirements, see [instructions](CONDA.md)
+- Create environment `daem` and install requirements, see [instructions](CONDA.md). 
+Make sure this environment is activated.
 - Clone this repository
 
 ```bash
