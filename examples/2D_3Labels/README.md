@@ -49,7 +49,8 @@ python imagetranslation/translate.py   --mode test \
   --checkpoint temp/Example_2D_3Labels/train \
   --input_dir datasets/vnc/combined/val \
   --output_dir temp/Example_2D_3Labels/test \
-  --image_height 1024  --image_width 1024
+  --image_height 1024  --image_width 1024 \
+  --model pix2pix
 ```
 *It might take a while to load the model from the checkpoint, but computation is fast even without a GPU.*
 The test run will output an HTML file at `temp/Example_2D_3Labels/test/index.html` that shows input/output/target image sets.

@@ -20,16 +20,15 @@ pip install tifffile
 - Create environment and install everything except TensorFlow
 
 ```bash
-conda create --name daem python=2 scikit-learn scikit-image pandas=0.19.2 bokeh
+conda create --name daem python=2 scikit-learn scikit-image pandas=0.19.2 bokeh numpy=1.14.0
 source activate daem
 pip install tifffile
 ```
 
-- Install TensorFlow
+- Install TensorFlow while precising the needed version of numpy.
 
 ```bash
-export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0rc0-cp27-none-linux_x86_64.whl
-pip install --ignore-installed --upgrade $TF_BINARY_URL
+pip install tensorflow==1.6.0 numpy==1.14
 ```
 
 - Test TensorFlow installation
