@@ -24,13 +24,13 @@
 - Clone this repository
 
 ```bash
-git clone https://github.com/tbullmann/heuhaufen.git
+git clone https://github.com/MarvinLavechin/daem.git
 ```
 
 - Clone other repositories used for computation and visualization if not yet installed
 
 ```bash
-git clone https://github.com/MarvinLavechin/daem.git
+git clone https://github.com/MarvinLavechin/imagetranslation-tensorflow
 ```
 
 - Symlink repositories
