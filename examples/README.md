@@ -1,6 +1,6 @@
 # Usage examples
 
-*Note:* Make sure your working directory is `\daem` and the environment is activated before running the examples:
+*Note:* Make sure your working directory is `/daem` and the environment is activated before running the examples:
 ```bash
 source activate daem
 ```
