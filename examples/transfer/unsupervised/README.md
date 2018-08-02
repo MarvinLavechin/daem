@@ -9,7 +9,12 @@ The transfer function will be learned using unsupervised CycleGAN, that is witho
 
 ## Typical result
 
-Work in progress.
+Here, an example of the transfer applied by CycleGAN : from mouse to drosophila.
+
+<img src="https://github.com/MarvinLavechin/daem/blob/master/examples/transfer/unsupervised/translation_membrane.png">
+<img src="https://github.com/MarvinLavechin/daem/blob/master/examples/transfer/unsupervised/translation_mitochondria.png">
+
+
 
 ## Training a supervised classifier from drosophila raw images to drosophila labels.
 
