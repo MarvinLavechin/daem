@@ -1,6 +1,7 @@
 # Domain adaptation using unsupervised CycleGAN
 
 Be sure that you prepared the data (See [data preparation](../README.md)) before running the following commands.
+And make sure that you read the [overview](../overview.md) of pipeline.
 
 
 In this scenario we want to learn a transfer function from the mouse raw stack to the drosophila raw stack. 
