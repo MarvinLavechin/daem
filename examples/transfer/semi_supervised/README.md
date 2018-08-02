@@ -16,7 +16,7 @@ The main goal of the semi-supervised version of CycleGAN was to reduce the space
 
 This time, if we run several trials and plot the farthest (in terms of ssim) fake images, we obtain :
 
-<img src="https://github.com/MarvinLavechin/daem/blob/master/examples/transfer/semi-supervised/farthest100.png">
+<img src="https://github.com/MarvinLavechin/daem/blob/master/examples/transfer/semi_supervised/farthest100.png">
 
 The algorithm seems much more stable in the semi-supervised scenario.
 
