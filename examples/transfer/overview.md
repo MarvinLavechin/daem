@@ -1,4 +1,4 @@
-## Domain adaptation using CycleGAN, application to microscopy imaging
+## Domain adaptation using CycleGAN and its application to microscopy imaging
 
 
 In this file, we give a short overview of the entire pipeline.
