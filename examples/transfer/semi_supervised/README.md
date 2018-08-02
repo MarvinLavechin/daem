@@ -11,6 +11,21 @@ The transfer function will be learned using semi-supervised CycleGAN, that is by
 
 Work in progress.
 
+## Training a supervised classifier from drosophila raw images to drosophila labels.
+
+Train the classifier for the direction "AtoB" (EM images to labels) using paired-to-image translation with a residual net as the generator:
+(Note that this step can be skipped if you already trained a classifier on the cropped images)
+
+```bash
+python imagetranslation/translate.py   --mode train \
+  --input_dir datasets/cropped_vnc/combined/train \
+  --output_dir temp/Example_2D_3Labels/train_on_cropped \
+  --which_direction AtoB  --Y_loss square \
+  --model pix2pix   --generator resnet \
+  --fliplr   --flipud  --transpose \
+  --max_epochs 2000  --display_freq 50
+```
+
 ## Learning the transfer function (from mouse raw images to drosophila raw images), then applying it.
 
 Here, we want to train our algorithm only on the training set. We provide two pairs of images to the model which can be described as follows :
@@ -45,21 +60,6 @@ python imagetranslation/translate.py   --mode test \
 The test run will output an HTML file at `temp/Example_Domain_Adaptation_Semi_Supervised/test_domain_adaptation/index.html` that shows input/reverse_output/output/target image sets.
 
 ## Segmenting the translated images
-###### Training a supervised classifier from drosophila raw images to drosophila labels.
-
-Train the classifier for the direction "AtoB" (EM images to labels) using paired-to-image translation with a residual net as the generator:
-(Note that this step can be skipped if you already trained a classifier on the cropped images)
-
-```bash
-python imagetranslation/translate.py   --mode train \
-  --input_dir datasets/cropped_vnc/combined/train \
-  --output_dir temp/Example_2D_3Labels/train_on_cropped \
-  --which_direction AtoB  --Y_loss square \
-  --model pix2pix   --generator resnet \
-  --fliplr   --flipud  --transpose \
-  --max_epochs 2000  --display_freq 50
-```
-
 ###### Applying the classifier on the translated cortex images <=> fake drosophila images.
 
 First, we need to concatenate the translated images with their respective labels :
