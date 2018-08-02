@@ -35,6 +35,7 @@ python imagetranslation/translate.py   --mode train \
   --max_epochs 2000  --display_freq 50
 ```
 
+These images have been obtained by considering a segmentation loss lambda equal to 100.
 Now that the classifier is trained, the goal will be to learn a transfer function to turn mouse images into drosophila images, and then applying the pre-trained classifier.
 
 
