@@ -18,6 +18,7 @@ This time, if we run several trials and plot the farthest (in terms of ssim) fak
 
 <img src="https://github.com/MarvinLavechin/daem/blob/master/examples/transfer/semi_supervised/farthest100.png">
 
+These images have been obtained by considering a segmentation loss lambda equal to 100.
 The algorithm seems much more stable in the semi-supervised scenario.
 
 ## Training a supervised classifier from drosophila raw images to drosophila labels.
@@ -35,7 +36,6 @@ python imagetranslation/translate.py   --mode train \
   --max_epochs 2000  --display_freq 50
 ```
 
-These images have been obtained by considering a segmentation loss lambda equal to 100.
 Now that the classifier is trained, the goal will be to learn a transfer function to turn mouse images into drosophila images, and then applying the pre-trained classifier.
 
 
