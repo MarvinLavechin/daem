@@ -30,7 +30,7 @@ python imagetranslation/translate.py   --mode train \
 
 ### Initialize training with paired image to label translation
 
-A single image `49.png` of the mouse SNEMI3D dataset was annotated for membranes, mitochondria and synapses.
+A single image `49.png` of the mouse SNEMI3D dataset has been annotated for membranes, mitochondria and synapses.
 This image pair is used for training a pix2pix2 model with residual networks for the G and F generators.
 Combine input and output images
 ```bash
