@@ -3,7 +3,9 @@
 In this file, we give a short overview of the entire pipeline.
 The problem is the following :
 
-![Pipeline](pipeline.png)
+<img src="https://github.com/MarvinLavechin/daem/blob/master/examples/transfer/pipeline.png" width="48">
+
+![Pipeline | medium](pipeline.png){:height="80%"}
 
 Given 2 stacks of EM images, one from mouse and from drosophila, we want to learn a segmentation algorithm on the mouse stack.
 The constraint is that we only have few labels (1 actually) in the mouse stack, while we have 20 labels in the drosophila stack.
