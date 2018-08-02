@@ -86,7 +86,7 @@ python imagetranslation/translate.py   --mode test \
 Note that the last step will generate a report named **_test_domain_adaptation_segmentation/test/index.html_** which provides :
 - the input that is the fake drosophila image
 - the output that is the segmentation obtained on the fake image
-- the target that is the groundtruth of the real mouse image (before transfer by CycleGAN)'
+- the target that is the groundtruth of the real mouse image (before transfer by CycleGAN)
 
 ###### Evaluating the results
 
