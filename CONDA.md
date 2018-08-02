@@ -20,7 +20,7 @@ pip install tifffile
 - Create environment and install everything except TensorFlow
 
 ```bash
-conda create --name daem python=2 scikit-learn scikit-image pandas=0.19.2 bokeh numpy=1.14.0
+conda create --name daem python=2 scikit-learn scikit-image pandas=0.19.2 bokeh
 source activate daem
 pip install tifffile
 ```
