@@ -1,6 +1,8 @@
 # Domain adaptation using unsupervised CycleGAN
 
-Here, we want to learn a transfer function from the mouse raw stack to the drosophila raw stack. 
+Be sure that you prepared the data (See [data preparation](../README.md)) before running the following commands.
+
+In this scenario we want to learn a transfer function from the mouse raw stack to the drosophila raw stack. 
 Then, we want to apply a (supervised) classification algorithm to predict the label on the translated mouse images.
 The transfer function will be learned using unsupervised CycleGAN, that is without using any labels from the mouse stack.
 
