@@ -7,14 +7,23 @@ In this scenario we want to learn a transfer function from the mouse raw stack t
 Then, we want to apply a (supervised) classification algorithm to predict the label on the translated mouse images.
 The transfer function will be learned using unsupervised CycleGAN, that is without using any labels from the mouse stack.
 
-## Typical result
+## Typical results
 
 Here, an example of the transfer applied by CycleGAN : from mouse to drosophila.
 
 <img src="https://github.com/MarvinLavechin/daem/blob/master/examples/transfer/unsupervised/translation_membrane.png">
+
+We can notice that after transfer, the mouse membrane is darker, and closer to drosophila membrane.
+
 <img src="https://github.com/MarvinLavechin/daem/blob/master/examples/transfer/unsupervised/translation_mitochondria.png">
 
+CycleGAN is able to remove the dark double-membrane that encloses mitochondria, which is present on mouse mitochondria but not on drosophila ones.
 
+However, for different trials (with the same hyper-parameters, and the same train/test set), we noticed some failure cases by plotting the farthest (in terms of ssim) fake images. 
+
+<img src="https://github.com/MarvinLavechin/daem/blob/master/examples/transfer/unsupervised/farthest0.png">
+
+See the [semi-supervised scenario](../semi_supervised/README.md) for a solution to this problem.
 
 ## Training a supervised classifier from drosophila raw images to drosophila labels.
 
