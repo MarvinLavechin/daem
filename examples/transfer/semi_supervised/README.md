@@ -10,7 +10,15 @@ The transfer function will be learned using semi-supervised CycleGAN, that is by
 
 ## Typical result
 
-Work in progress.
+The main goal of the semi-supervised version of CycleGAN was to reduce the space of possible transfer functions by adding a segmentation loss and therefore :
+* Avoid the failure cases encountered in the unsupervised scenario
+* Improve the segmentation accuracy
+
+This time, if we run several trials and plot the farthest (in terms of ssim) fake images, we obtain :
+
+<img src="https://github.com/MarvinLavechin/daem/blob/master/examples/transfer/unsupervised/farthest100.png">
+
+The algorithm seems much more stable in the semi-supervised scenario.
 
 ## Training a supervised classifier from drosophila raw images to drosophila labels.
 
