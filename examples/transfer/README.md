@@ -11,16 +11,6 @@ mkdir datasets/cortex/stack1/labels
 cp examples/transfer/paired_annotation/labels/49.png datasets/cortex/stack1/labels
 ```
 
-Next, we combine pair images :
-
-```bash
-python imagetranslation/tools/process.py \
-  --operation combine \
-  --input_dir examples/transfer/paired_annotation/raw/ \
-  --b_dir examples/transfer/paired_annotation/labels/ \
-  --output_dir datasets/cortex/paired_annotation/combined/
-```
-
 Since we have just one annotated mouse image, we create a new version of the drosophila and the mouse stack by cropping them by 4.
 In that way, we will be able to have a mouse train set and a mouse test set to evaluate the segmentation accuracy :
 
