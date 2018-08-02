@@ -25,9 +25,11 @@ python imagetranslation/translate.py   --mode train \
   --max_epochs 2000  --display_freq 50
 ```
 
+Now that the classifier is trained, the goal will be to learn a transfer function to turn mouse images into drosophila images, and then applying the pre-trained classifier.
+
 ## Learning the transfer function (from mouse raw images to drosophila raw images), then applying it.
 
-We want to use all of the raw images that we have, there is no need to have a train set and a test set.
+We want to use all of the raw images that we have, there is no need to have a train set and a test set (since the evaluation is conducted on the segmentation, and we do not use any labels during the training step).
 However, we recommend to delete some of the drosophila images to reduce the memory usage and decrease the training time.
 We haven't observed any improvements in the segmentation accuracy and/or in the quality of the transfer by using 80 drosophila raw images rather than 20 well-chosen ones (sufficiently different).
 

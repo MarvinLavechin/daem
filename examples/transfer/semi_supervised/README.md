@@ -26,9 +26,13 @@ python imagetranslation/translate.py   --mode train \
   --max_epochs 2000  --display_freq 50
 ```
 
+Now that the classifier is trained, the goal will be to learn a transfer function to turn mouse images into drosophila images, and then applying the pre-trained classifier.
+
+
 ## Learning the transfer function (from mouse raw images to drosophila raw images), then applying it.
 
-Here, we want to train our algorithm only on the training set. We provide two pairs of images to the model which can be described as follows :
+Contrary to the unsupervised case, we do need a train set and a test set since we are using few mouse labels during the CycleGAN training. 
+We provide two pairs of images to the model which can be described as follows :
 - A mouse raw/mouse label pair.
 - A drosophila raw/drosophila label pair.
 At each step of the training, we compute a segmentation loss between the mouse translated image and its groundtruth.
@@ -45,7 +49,7 @@ python imagetranslation/translate.py --mode train \
 	--max_epochs 2000 --display_freq 50
 ```
 
-We apply the transfer on our validation set containing mouse images.
+We apply the transfer on our mouse test set :
 
 ```bash
 python imagetranslation/translate.py   --mode test \
