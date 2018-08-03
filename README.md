@@ -2,6 +2,12 @@
 
 ![Result](examples/2D_3Labels/Example_2D_3Labels_eval_membranes.jpg)
 
+### Note
+
+This work is partially based on the pipeline built by Torsten Bullmann whose original version can be found [here](https://github.com/tbullmann/heuhaufen).
+
+It has been developed and extended to address the problem of domain adaptation applied to electron microscopy segmentation.  
+
 ### Prerequisites
 - Linux or OSX
 - Python 2
